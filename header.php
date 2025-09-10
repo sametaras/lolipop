@@ -1,33 +1,109 @@
 <?php
 /**
- * Header template
+ * Header template - SEO Optimized
  */
 
 $theme = new AMP_Responsive_Theme();
 $is_mobile = $theme->is_mobile();
 $is_amp = $theme->is_amp();
+
+// SEO Meta bilgileri
+$site_name = get_bloginfo('name');
+$site_description = get_bloginfo('description');
+$current_url = home_url($_SERVER['REQUEST_URI']);
+$canonical_url = $is_amp ? str_replace('?amp=1', '', $current_url) : $current_url;
+
+// Sayfa spesifik SEO bilgileri
+$page_title = '';
+$page_description = '';
+$page_image = '';
+$page_type = 'website';
+
+if (is_singular()) {
+    global $post;
+    $page_title = get_the_title();
+    $page_description = get_the_excerpt() ? wp_strip_all_tags(get_the_excerpt()) : wp_strip_all_tags(substr(get_the_content(), 0, 160));
+    $page_image = get_the_post_thumbnail_url($post->ID, 'large');
+    $page_type = is_singular('urunler') ? 'product' : 'article';
+} elseif (is_home() || is_front_page()) {
+    $page_title = $site_name;
+    $page_description = $site_description;
+    $page_image = get_template_directory_uri() . '/assets/images/logo.png';
+} elseif (is_category()) {
+    $page_title = single_cat_title('', false);
+    $page_description = category_description();
+    $page_type = 'website';
+} elseif (is_tag()) {
+    $page_title = single_tag_title('', false);
+    $page_description = tag_description();
+    $page_type = 'website';
+}
+
+// Varsayılan resim
+if (!$page_image) {
+    $page_image = get_template_directory_uri() . '/assets/images/default-og-image.jpg';
+}
+
+// Title optimizasyonu
+$seo_title = $page_title;
+if (!is_front_page()) {
+    $seo_title .= ' | ' . $site_name;
+}
 ?>
 <!doctype html>
-<html <?php language_attributes(); ?> <?php echo $is_amp ? 'amp' : ''; ?>>
+<html <?php language_attributes(); ?> <?php echo $is_amp ? 'amp i-amphtml-layout i-amphtml-no-boilerplate' : ''; ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1">
-    <title><?php wp_title('|', true, 'right'); ?><?php bloginfo('name'); ?></title>
+    
+    <!-- SEO Meta Tags -->
+    <title><?php echo esc_html($seo_title); ?></title>
+    <meta name="description" content="<?php echo esc_attr($page_description); ?>">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#1B83A0">
     
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?php echo esc_url($canonical_url); ?>">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="<?php echo esc_attr($page_type); ?>">
+    <meta property="og:title" content="<?php echo esc_attr($page_title); ?>">
+    <meta property="og:description" content="<?php echo esc_attr($page_description); ?>">
+    <meta property="og:url" content="<?php echo esc_url($canonical_url); ?>">
+    <meta property="og:site_name" content="<?php echo esc_attr($site_name); ?>">
+    <meta property="og:image" content="<?php echo esc_url($page_image); ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="tr_TR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo esc_attr($page_title); ?>">
+    <meta name="twitter:description" content="<?php echo esc_attr($page_description); ?>">
+    <meta name="twitter:image" content="<?php echo esc_url($page_image); ?>">
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="TR">
+    <meta name="geo.placename" content="Türkiye">
+    
+    <!-- Language -->
+    <meta http-equiv="content-language" content="tr">
+    
     <?php if ($is_amp): ?>
-        <link rel="canonical" href="<?php echo esc_url(get_permalink()); ?>"/>
-        
-        <!-- Google Fonts -->
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext' type='text/css' media='all' />
-        <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;500&display=swap" rel="stylesheet">
-        
         <!-- AMP Scripts -->
-        <script type='text/javascript' async src='https://cdn.ampproject.org/v0.js'></script>
+        <script async src="https://cdn.ampproject.org/v0.js"></script>
         <script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
-        <script type='text/javascript' custom-element="amp-sidebar" async src='https://cdn.ampproject.org/v0/amp-sidebar-0.1.js'></script>
+        <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"></script>
         <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
+        <script async custom-element="amp-lightbox-gallery" src="https://cdn.ampproject.org/v0/amp-lightbox-gallery-0.1.js"></script>
+        
+        <!-- Google Fonts for AMP -->
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+        
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
         <!-- AMP Boilerplate -->
         <style amp-boilerplate>
@@ -39,122 +115,169 @@ $is_amp = $theme->is_amp();
             </style>
         </noscript>
         
-        <!-- AMP Custom Styles -->
+        <!-- AMP Custom CSS -->
         <style amp-custom>
-            /* Reset and Base Styles */
-            *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-            body{margin:0;background:#f5f5f5;font-family:Quicksand,sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
-            
-            /* Container */
+            /* Critical CSS for AMP */
+            *{box-sizing:border-box}
+            body{margin:0;background:#e5e5e5;font-family:'Quicksand',sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
             .main-wrapper{background:#fff;max-width:780px;margin:0 auto;min-height:100vh}
             
-            /* Header Styles */
-            .site-header{height:52px;width:100%;position:relative;margin:0;color:#fff;background:#1B83A0}
+            /* Header */
+            .site-header{height:52px;width:100%;position:relative;margin:0;color:#fff;background:linear-gradient(to right,#004a7f,#004a7f)}
             .site-header .branding{display:block;text-align:center;font-size:20px;font-weight:400;text-decoration:none;font-family:Quicksand,sans-serif;color:#fff;position:absolute;top:0;width:100%;padding:10px 55px;z-index:9;height:52px;line-height:32px}
             .navbar-toggle,.navbar-search{color:#fff;font-weight:400;font-size:18px;position:absolute;top:0;z-index:99;border:none;background:rgba(0,0,0,.1);height:52px;line-height:50px;margin:0;padding:0;width:52px;text-align:center;outline:0;cursor:pointer;transition:all .6s ease}
             .navbar-toggle{font-size:21px;left:0}
             .navbar-search{font-size:18px;right:0;line-height:48px}
             .navbar-toggle:hover,.navbar-search:hover{background:rgba(0,0,0,.2)}
             
+            /* Mobile Grid */
+            .mobile-simple-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:2px;background:#fbfbfb}
+            .simple-grid-item{position:relative;aspect-ratio:150/275;overflow:hidden}
+            .simple-product-link{display:block;width:100%;height:100%}
+            .simple-product-image{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+            .simple-product-link:hover .simple-product-image{transform:scale(1.02)}
+            
+            /* Desktop Styles */
+            .desktop-content{max-width:1200px;margin:0 auto;background:#fff}
+            .content-wrapper{display:grid;grid-template-columns:1fr 300px;gap:30px;padding:30px 20px}
+            .main-content{min-width:0}
+            .blog-header{text-align:center;margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid #1B83A0}
+            .blog-header h1{font-size:36px;color:#333;margin-bottom:10px;font-weight:600}
+            .article-item{margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid #eee}
+            .article-title{font-size:28px;margin:15px 0;line-height:1.3}
+            .article-title a{color:#333;text-decoration:none}
+            .article-title a:hover{color:#1B83A0}
+            .category-tag{background:#1B83A0;color:#fff;padding:2px 8px;border-radius:12px;text-decoration:none;font-size:12px}
+            .read-more-btn{background:#1B83A0;color:#fff;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:500;transition:background .3s ease;display:inline-block}
+            
             /* Sidebar */
             .amp-sidebar{background:#fff;max-width:350px;min-width:270px;padding-bottom:30px}
             .close-sidebar{font-size:25px;border:none;color:#fff;position:absolute;top:10px;right:0px;background:0 0;width:32px;height:32px;line-height:32px;text-align:center;padding:0;outline:0;cursor:pointer}
-            .sidebar-brand{color:#fff;padding:0px 50px 10px 5px;text-align:left;font-family:Quicksand,sans-serif;line-height:2;background:#1B83A0}
+            .sidebar-brand{color:#fff;padding:0px 50px 10px 5px;text-align:left;font-family:Quicksand,sans-serif;line-height:2;background:linear-gradient(to right,#004a7f,#004a7f)}
             .sidebar-brand .brand-name{font-weight:500;font-size:18px}
             .sidebar-brand .brand-description{font-weight:400;font-size:14px;line-height:1.4;margin-top:4px}
             
-            /* Mobile Products Grid */
-            .mobile-products-container{padding:10px}
-            .grid-container{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
-            
-            @media only screen and (max-width:399px){
-                .grid-container{grid-template-columns:repeat(5,1fr)}
-            }
-            @media only screen and (min-width:400px){
-                .grid-container{grid-template-columns:repeat(5,1fr)}
-            }
-            
-            /* Product Cards */
-            .product-card{position:relative;overflow:hidden;border-radius:3px;box-shadow:0px 0px 2px 0px #555;background:#fff}
-            .product-image-container{position:relative;width:100%;height:275px}
-            .product-image,.no-image-placeholder{width:100%;height:100%;object-fit:cover}
-            .no-image-placeholder{background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px}
-            
-            /* Product Overlay */
-            .product-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(0,145,186,0.9) 0%,rgba(255,255,255,0) 100%);color:#fff;padding:10px 5px}
-            .product-location{position:absolute;top:-60px;left:0;right:0;background:linear-gradient(1deg,rgba(0,0,0,0) 21%,#000 98%);color:#fff;font-size:10px;text-align:center;padding:2px;font-family:Khand,sans-serif}
-            .product-title{font-size:12px;font-weight:600;margin-bottom:3px;font-family:Khand,sans-serif}
-            .product-phone{font-size:14px;background:rgba(0,0,0,0.1);padding:2px 4px;text-align:center;margin:2px 0;font-family:Khand,sans-serif}
-            .product-meta{font-size:10px;display:flex;justify-content:space-between}
-            .product-age,.product-price{background:rgba(0,0,0,0.2);padding:1px 3px;border-radius:2px}
-            
-            /* Desktop Articles */
-            .desktop-articles-container{padding:20px;max-width:1200px;margin:0 auto}
-            .articles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-            .article-card{background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);overflow:hidden;transition:transform 0.3s ease}
-            .article-card:hover{transform:translateY(-5px)}
-            .article-image-container{width:100%;height:200px;overflow:hidden}
-            .article-image{width:100%;height:100%;object-fit:cover}
-            .article-content{padding:20px}
-            .article-meta{font-size:12px;color:#999;margin-bottom:10px}
-            .article-date,.article-author{margin-right:10px}
-            .category-tag{background:#1B83A0;color:#fff;padding:2px 6px;border-radius:3px;font-size:10px;margin-right:5px}
-            .article-title{font-size:18px;margin:10px 0;line-height:1.4}
-            .article-title a{color:#333;text-decoration:none}
-            .article-title a:hover{color:#1B83A0}
-            .article-excerpt{color:#666;line-height:1.6;margin:10px 0}
-            .read-more-btn{background:#1B83A0;color:#fff;padding:8px 16px;border-radius:4px;text-decoration:none;font-size:14px;display:inline-block;transition:background 0.3s ease}
-            .read-more-btn:hover{background:#155a70}
-            
-            /* Pagination */
-            .pagination-container{margin:30px 0;text-align:center}
-            .pagination-container a,.pagination-container span{display:inline-block;padding:8px 12px;margin:0 2px;border:1px solid #ddd;color:#333;text-decoration:none}
-            .pagination-container .current{background:#1B83A0;color:#fff;border-color:#1B83A0}
-            .pagination-container a:hover{background:#f5f5f5}
-            
-            /* Sidebar */
-            .main-sidebar{width:300px;padding:20px;background:#f9f9f9}
-            .widget{margin-bottom:30px;background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
-            .widget-title{color:#333;font-size:16px;margin-bottom:15px;border-bottom:2px solid #1B83A0;padding-bottom:5px}
-            
             /* Footer */
-            .site-footer{background:#333;color:#fff;text-align:center;padding:20px}
-            .copyright{font-size:13px;margin:0}
+            .istanbul-amp-footer{margin:0;background:#f3f3f3}
+            .istanbul-amp-copyright{padding:17px 10px;text-align:center;font-family:Quicksand,sans-serif;font-weight:400;color:#494949;border-top:1px solid rgba(0,0,0,.1);font-size:13px}
             
             /* Responsive */
-            @media (max-width:768px){
-                .desktop-articles-container{padding:10px}
-                .articles-grid{grid-template-columns:1fr}
-                .main-sidebar{display:none}
-            }
+            @media (max-width:399px){.mobile-simple-grid{grid-template-columns:repeat(4,1fr)}}
+            @media (max-width:768px){.content-wrapper{grid-template-columns:1fr;gap:20px;padding:15px 10px}.sidebar{display:none}}
             
-            /* Links */
-            a{color:#1B83A0;text-decoration:none;transition:color 0.3s ease}
-            a:hover{color:#155a70}
+            /* Utility */
+            .text-center{text-align:center}
+            .margintop20{margin-top:20px}
+            .clearfix:after{content:'';display:table;clear:both}
+            a{color:#353233;text-decoration:none;transition:color .3s ease}
+            a:hover{color:#1B83A0}
             
-            /* No content messages */
+            /* No content */
             .no-products,.no-articles{text-align:center;padding:40px;color:#666}
+            
+            /* SEO Hidden */
+            .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
         </style>
+        
     <?php else: ?>
+        <!-- Normal WordPress header -->
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <!-- Preload critical resources -->
+        <link rel="preload" href="<?php echo get_stylesheet_uri(); ?>" as="style">
+        
         <?php wp_head(); ?>
     <?php endif; ?>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "<?php echo esc_js($site_name); ?>",
+        "url": "<?php echo esc_url(home_url()); ?>",
+        "description": "<?php echo esc_js($site_description); ?>",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "<?php echo esc_url(get_template_directory_uri() . '/assets/images/logo.png'); ?>"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "areaServed": "TR",
+            "availableLanguage": "Turkish"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "TR"
+        },
+        "sameAs": [
+            "https://www.facebook.com/yourpage",
+            "https://www.instagram.com/yourpage"
+        ]
+    }
+    </script>
+    
+    <?php if (is_singular('urunler')): ?>
+    <!-- Product Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "<?php echo esc_js(get_the_title()); ?>",
+        "description": "<?php echo esc_js($page_description); ?>",
+        "image": "<?php echo esc_url($page_image); ?>",
+        "brand": {
+            "@type": "Brand",
+            "name": "<?php echo esc_js($site_name); ?>"
+        },
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "TRY",
+            "seller": {
+                "@type": "Organization",
+                "name": "<?php echo esc_js($site_name); ?>"
+            }
+        }
+    }
+    </script>
+    <?php endif; ?>
+    
+    <!-- Hreflang for Turkish -->
+    <link rel="alternate" hreflang="tr" href="<?php echo esc_url($canonical_url); ?>">
+    <link rel="alternate" hreflang="x-default" href="<?php echo esc_url($canonical_url); ?>">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico" sizes="any">
+    <link rel="icon" href="<?php echo get_template_directory_uri(); ?>/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/apple-touch-icon.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="<?php echo get_template_directory_uri(); ?>/manifest.json">
 </head>
 
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> itemscope itemtype="https://schema.org/WebPage">
     <div class="main-wrapper">
+        
+        <!-- Skip to content for accessibility -->
+        <a class="sr-only" href="#main-content">Ana içeriğe git</a>
         
         <!-- AMP Sidebar -->
         <?php if ($is_amp): ?>
             <amp-sidebar id="sidebar" class="amp-sidebar" layout="nodisplay" side="left">
                 <div class="sidebar-container">
-                    <button on="tap:sidebar.close" class="close-sidebar" tabindex="11" role="button">×</button>
+                    <button on="tap:sidebar.close" class="close-sidebar" tabindex="11" role="button" aria-label="Menüyü kapat">×</button>
                     
                     <div class="sidebar-brand">
                         <div class="brand-name"><?php bloginfo('name'); ?></div>
                         <div class="brand-description"><?php bloginfo('description'); ?></div>
                     </div>
                     
-                    <nav class="sidebar-nav">
+                    <nav class="sidebar-nav" role="navigation" aria-label="Ana menü">
                         <?php
                         wp_nav_menu(array(
                             'theme_location' => 'mobile',
@@ -169,20 +292,25 @@ $is_amp = $theme->is_amp();
         <?php endif; ?>
         
         <!-- Header -->
-        <header class="site-header">
+        <header class="site-header" role="banner" itemscope itemtype="https://schema.org/WPHeader">
             <?php if ($is_amp): ?>
-                <button class="navbar-toggle" on="tap:sidebar.toggle" tabindex="10" role="button">☰</button>
+                <button class="navbar-toggle" on="tap:sidebar.toggle" tabindex="10" role="button" aria-label="Menüyü aç">☰</button>
             <?php else: ?>
-                <button class="navbar-toggle" onclick="toggleSidebar()">☰</button>
+                <button class="navbar-toggle" onclick="toggleSidebar()" aria-label="Menüyü aç">☰</button>
             <?php endif; ?>
             
-            <a href="<?php echo home_url(); ?>" class="branding">
-                <?php if (has_custom_logo()): ?>
-                    <?php the_custom_logo(); ?>
-                <?php else: ?>
-                    <?php bloginfo('name'); ?>
-                <?php endif; ?>
+            <a href="<?php echo home_url(); ?>" class="branding" rel="home" itemprop="url">
+                <span itemprop="name">
+                    <?php if (has_custom_logo()): ?>
+                        <?php the_custom_logo(); ?>
+                    <?php else: ?>
+                        <?php bloginfo('name'); ?>
+                    <?php endif; ?>
+                </span>
             </a>
             
-            <a href="<?php echo home_url(); ?>" class="navbar-search">🔍</a>
+            <a href="<?php echo home_url(); ?>?s=" class="navbar-search" aria-label="Arama">🔍</a>
         </header>
+        
+        <!-- Main content area -->
+        <main id="main-content" role="main"><?php // Bu kapanış tag footer.php'de olacak ?>

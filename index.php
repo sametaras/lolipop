@@ -38,13 +38,7 @@ $is_amp = $theme->is_amp();
                 if ($products->have_posts()):
                     while ($products->have_posts()): $products->the_post();
                         $product_id = get_the_ID();
-                        $phone = get_product_phone($product_id);
-                        $location = get_product_location($product_id);
-                        $age = get_product_age($product_id);
-                        $price = get_product_price($product_id);
                         $image = get_the_post_thumbnail_url($product_id, 'product-thumb');
-                        $title = get_the_title();
-                        $excerpt = get_the_excerpt();
                         ?>
                         <div class="grid-item">
                             <div class="product-card">
@@ -68,30 +62,7 @@ $is_amp = $theme->is_amp();
                                             </div>
                                         <?php endif; ?>
                                         
-                                        <!-- Ürün bilgi overlay'i -->
-                                        <div class="product-overlay">
-                                            <?php if ($location): ?>
-                                                <div class="product-location"><?php echo esc_html($location); ?></div>
-                                            <?php endif; ?>
-                                            
-                                            <div class="product-content">
-                                                <div class="product-title"><?php echo esc_html($title); ?></div>
-                                                
-                                                <?php if ($phone): ?>
-                                                    <div class="product-phone"><?php echo esc_html($phone); ?></div>
-                                                <?php endif; ?>
-                                                
-                                                <div class="product-meta">
-                                                    <?php if ($age): ?>
-                                                        <span class="product-age"><?php echo esc_html($age); ?> yaş</span>
-                                                    <?php endif; ?>
-                                                    
-                                                    <?php if ($price): ?>
-                                                        <span class="product-price"><?php echo esc_html($price); ?></span>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
+                                
                                     </div>
                                 </a>
                             </div>

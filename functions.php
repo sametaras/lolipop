@@ -44,6 +44,8 @@ class AMP_Responsive_Theme {
         // Görsel boyutları
         add_image_size('product-thumb', 150, 275, true);
         add_image_size('article-thumb', 300, 200, true);
+        add_image_size('gallery-thumb', 150, 150, true);
+        add_image_size('gallery-large', 800, 600, true);
     }
     
     /**
@@ -58,6 +60,12 @@ class AMP_Responsive_Theme {
         
         wp_enqueue_style('theme-style', get_stylesheet_uri(), array(), '1.0.0');
         wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=Khand:wght@400;500&display=swap', array(), null);
+        
+        // Admin için media uploader
+        if (is_admin()) {
+            wp_enqueue_media();
+            wp_enqueue_script('theme-admin-js', get_template_directory_uri() . '/js/admin.js', array('jquery'), '1.0.0', true);
+        }
     }
     
     /**
@@ -115,6 +123,7 @@ class AMP_Responsive_Theme {
         <script async src="https://cdn.ampproject.org/v0.js"></script>
         <script async custom-element="amp-sidebar" src="https://cdn.ampproject.org/v0/amp-sidebar-0.1.js"></script>
         <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
+        <script async custom-element="amp-lightbox-gallery" src="https://cdn.ampproject.org/v0/amp-lightbox-gallery-0.1.js"></script>
         
         <style amp-boilerplate>
             body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}
@@ -212,6 +221,37 @@ function truncate_text($text, $length = 100) {
 }
 
 /**
+ * Ürün galeri resimlerini al
+ */
+function get_product_gallery_images($post_id) {
+    $gallery_images = get_post_meta($post_id, 'product_gallery_images', true);
+    
+    if (empty($gallery_images) || !is_array($gallery_images)) {
+        return array();
+    }
+    
+    $images = array();
+    foreach ($gallery_images as $image_id) {
+        if ($image_id && is_numeric($image_id)) {
+            $image_url = wp_get_attachment_image_url($image_id, 'gallery-large');
+            $thumb_url = wp_get_attachment_image_url($image_id, 'gallery-thumb');
+            $alt_text = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+            
+            if ($image_url) {
+                $images[] = array(
+                    'id' => $image_id,
+                    'url' => $image_url,
+                    'thumb' => $thumb_url,
+                    'alt' => $alt_text ?: get_the_title($post_id)
+                );
+            }
+        }
+    }
+    
+    return $images;
+}
+
+/**
  * Widget alanları
  */
 function amp_responsive_widgets_init() {
@@ -235,6 +275,15 @@ function add_product_meta_boxes() {
         'product-details',
         'Ürün Detayları',
         'product_details_callback',
+        'urunler',
+        'normal',
+        'high'
+    );
+    
+    add_meta_box(
+        'product-gallery',
+        'Ürün Galeri Resimleri',
+        'product_gallery_callback',
         'urunler',
         'normal',
         'high'
@@ -291,6 +340,149 @@ function product_details_callback($post) {
     <?php
 }
 
+/**
+ * Ürün galeri meta box callback
+ */
+function product_gallery_callback($post) {
+    wp_nonce_field('save_product_gallery', 'product_gallery_nonce');
+    
+    $gallery_images = get_post_meta($post->ID, 'product_gallery_images', true);
+    if (!is_array($gallery_images)) {
+        $gallery_images = array();
+    }
+    ?>
+    <div class="product-gallery-meta">
+        <p><strong>Not:</strong> Öne çıkan görsel sadece ana sayfada görünür. Burada eklediğiniz resimler ürün sayfasındaki galeride gösterilir.</p>
+        
+        <div class="gallery-images-container">
+            <div id="gallery-images-list">
+                <?php if (!empty($gallery_images)): ?>
+                    <?php foreach ($gallery_images as $index => $image_id): ?>
+                        <?php if ($image_id): ?>
+                            <?php $image_url = wp_get_attachment_image_url($image_id, 'thumbnail'); ?>
+                            <div class="gallery-image-item" data-index="<?php echo $index; ?>">
+                                <img src="<?php echo esc_url($image_url); ?>" alt="" style="width: 100px; height: 100px; object-fit: cover;">
+                                <input type="hidden" name="product_gallery_images[]" value="<?php echo esc_attr($image_id); ?>">
+                                <button type="button" class="remove-gallery-image button">Kaldır</button>
+                                <div class="image-handle">⋮⋮</div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <p>
+            <button type="button" id="add-gallery-images" class="button button-secondary">Galeri Resmi Ekle</button>
+            <span class="description">Birden fazla resim seçebilirsiniz. Resimleri sürükleyerek sıralayabilirsiniz.</span>
+        </p>
+    </div>
+    
+    <style>
+        .product-gallery-meta .gallery-images-container {
+            margin: 15px 0;
+        }
+        
+        #gallery-images-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .gallery-image-item {
+            position: relative;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background: #f9f9f9;
+            cursor: move;
+        }
+        
+        .gallery-image-item img {
+            display: block;
+        }
+        
+        .gallery-image-item .remove-gallery-image {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3232;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .gallery-image-item .image-handle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 4px;
+            font-size: 12px;
+            cursor: move;
+        }
+        
+        .gallery-image-item.ui-sortable-helper {
+            transform: rotate(5deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+    
+    <script>
+        jQuery(document).ready(function($) {
+            // Resim seçici
+            $('#add-gallery-images').on('click', function(e) {
+                e.preventDefault();
+                
+                var mediaUploader = wp.media({
+                    title: 'Galeri Resimleri Seç',
+                    button: {
+                        text: 'Resimleri Seç'
+                    },
+                    multiple: true
+                });
+                
+                mediaUploader.on('select', function() {
+                    var attachments = mediaUploader.state().get('selection').toJSON();
+                    
+                    attachments.forEach(function(attachment) {
+                        var imageHtml = '<div class="gallery-image-item" data-index="' + Date.now() + '">' +
+                            '<img src="' + attachment.sizes.thumbnail.url + '" alt="" style="width: 100px; height: 100px; object-fit: cover;">' +
+                            '<input type="hidden" name="product_gallery_images[]" value="' + attachment.id + '">' +
+                            '<button type="button" class="remove-gallery-image button">Kaldır</button>' +
+                            '<div class="image-handle">⋮⋮</div>' +
+                            '</div>';
+                        
+                        $('#gallery-images-list').append(imageHtml);
+                    });
+                });
+                
+                mediaUploader.open();
+            });
+            
+            // Resim kaldırma
+            $(document).on('click', '.remove-gallery-image', function(e) {
+                e.preventDefault();
+                $(this).closest('.gallery-image-item').remove();
+            });
+            
+            // Sürükle bırak sıralama
+            $('#gallery-images-list').sortable({
+                handle: '.image-handle',
+                placeholder: 'gallery-image-placeholder',
+                tolerance: 'pointer'
+            });
+        });
+    </script>
+    <?php
+}
+
 function save_product_details($post_id) {
     if (!isset($_POST['product_details_nonce']) || !wp_verify_nonce($_POST['product_details_nonce'], 'save_product_details')) {
         return;
@@ -316,6 +508,22 @@ function save_product_details($post_id) {
                 update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
             }
         }
+    }
+    
+    // Galeri resimlerini kaydet
+    if (isset($_POST['product_gallery_nonce']) && wp_verify_nonce($_POST['product_gallery_nonce'], 'save_product_gallery')) {
+        $gallery_images = array();
+        
+        if (isset($_POST['product_gallery_images']) && is_array($_POST['product_gallery_images'])) {
+            foreach ($_POST['product_gallery_images'] as $image_id) {
+                $image_id = intval($image_id);
+                if ($image_id > 0) {
+                    $gallery_images[] = $image_id;
+                }
+            }
+        }
+        
+        update_post_meta($post_id, 'product_gallery_images', $gallery_images);
     }
 }
 add_action('save_post', 'save_product_details');
@@ -418,6 +626,7 @@ function siralama_yonetimi_page() {
                         <th>Yeni Sıra (1-100)</th>
                         <th>Telefon</th>
                         <th>Konum</th>
+                        <th>Galeri</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -425,6 +634,7 @@ function siralama_yonetimi_page() {
                         $current_sira = get_post_meta($product->ID, 'urun_sira', true);
                         $telefon = get_post_meta($product->ID, 'urun_telefon', true);
                         $konum = get_post_meta($product->ID, 'urun_konum', true);
+                        $gallery_images = get_product_gallery_images($product->ID);
                         ?>
                         <tr>
                             <td>
@@ -454,6 +664,13 @@ function siralama_yonetimi_page() {
                             </td>
                             <td><?php echo esc_html($telefon); ?></td>
                             <td><?php echo esc_html($konum); ?></td>
+                            <td>
+                                <?php if (!empty($gallery_images)): ?>
+                                    <span style="color: green;">✓ <?php echo count($gallery_images); ?> resim</span>
+                                <?php else: ?>
+                                    <span style="color: #999;">Galeri boş</span>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
