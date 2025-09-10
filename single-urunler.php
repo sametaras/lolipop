@@ -44,12 +44,12 @@ if (have_posts()):
     <div class="text-center">
         <a href="<?php echo home_url(); ?>">
             <?php if ($is_amp): ?>
-                <amp-img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" 
+                <amp-img src="<?php echo get_template_directory_uri(); ?>/logo.jpg" 
                          alt="<?php bloginfo('name'); ?>" 
                          width="300" height="100" layout="responsive">
                 </amp-img>
             <?php else: ?>
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" 
+                <img src="<?php echo get_template_directory_uri(); ?>/logo.jpg" 
                      alt="<?php bloginfo('name'); ?>" class="site-logo">
             <?php endif; ?>
         </a>
@@ -186,80 +186,6 @@ if (have_posts()):
         
         <div class="margintop20 clearfix"></div>
         
-        <!-- Benzer İlanlar -->
-        <div class="related-products-section">
-            <h3>Benzer İlanlar</h3>
-            <div class="vipliste2">
-                <div class="clearfix">
-                    <?php
-                    $related_products = new WP_Query(array(
-                        'post_type' => 'urunler',
-                        'posts_per_page' => 10,
-                        'post__not_in' => array($post_id),
-                        'meta_query' => array(
-                            array(
-                                'key' => 'urun_telefon',
-                                'value' => '',
-                                'compare' => '!='
-                            )
-                        ),
-                        'orderby' => array(
-                            'meta_value_num' => 'ASC',
-                            'date' => 'DESC'
-                        ),
-                        'meta_key' => 'urun_sira'
-                    ));
-                    
-                    if ($related_products->have_posts()):
-                        while ($related_products->have_posts()): $related_products->the_post();
-                            $rel_id = get_the_ID();
-                            $rel_image = get_the_post_thumbnail_url($rel_id, 'product-thumb');
-                            $rel_title = get_the_title();
-                            $rel_location = get_product_location($rel_id);
-                            $rel_age = get_product_age($rel_id);
-                            $rel_phone = get_product_phone($rel_id);
-                            ?>
-                            <div class="vip" style="text-align: center;">
-                                <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: inherit;">
-                                    <div class="yan-cerceve">
-                                        <?php if ($rel_image): ?>
-                                            <?php if ($is_amp): ?>
-                                                <amp-img 
-                                                    src="<?php echo esc_url($rel_image); ?>" 
-                                                    alt="<?php echo esc_attr($rel_title); ?>"
-                                                    class="yan-resim"
-                                                    width="75" 
-                                                    height="75" 
-                                                    layout="responsive">
-                                                </amp-img>
-                                            <?php else: ?>
-                                                <img src="<?php echo esc_url($rel_image); ?>" alt="<?php echo esc_attr($rel_title); ?>" class="yan-resim">
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="text-small" style="margin-top: 2px;">
-                                        <strong><?php echo esc_html($rel_title); ?></strong>
-                                        <?php if ($rel_age): ?>
-                                            <br><?php echo esc_html($rel_age); ?> yaş
-                                        <?php endif; ?>
-                                        <?php if ($rel_location): ?>
-                                            <br><?php echo esc_html($rel_location); ?>
-                                        <?php endif; ?>
-                                    </div>
-                                </a>
-                            </div>
-                            <?php
-                        endwhile;
-                        wp_reset_postdata();
-                    endif;
-                    ?>
-                </div>
-            </div>
-        </div>
-        
-        <div class="margintop20 clearfix"></div>
-    </div>
-</div>
 
 <!-- Footer - Ana sayfaya dönüş linki -->
 <footer class="istanbul-amp-footer">
