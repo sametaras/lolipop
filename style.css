@@ -120,7 +120,7 @@ hr{border:0.5px solid #ddd}
     position: relative;
     margin: 0;
     color: #fff;
-    background: linear-gradient(to right, #004a7f, #004a7f);
+    background: linear-gradient(to right, #7f0000, #71007f);
 }
 
 .site-header .branding {
@@ -681,11 +681,11 @@ section#kisiselBilgi ul li{float:left;margin-bottom:1%}
 section#kisiselBilgi ul li.baslik{float:left;border:0px solid #ddd;background-color:#666666;color:#ffffff;height:30px;line-height:28px;padding-left:1%;
 width:calc(25% - 2px);font-size:90%;margin-left:2px;font-weight:500}
 section#kisiselBilgi ul li.veri{float:left;height:30px;line-height:28px;text-indent:4%;
-width:calc(45% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
+width:calc(45% - 2px);font-size:90%;font-weight:500;background-color:#7b1e72;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
 section#kisiselBilgi ul li.baslik2{float:left;border:0px solid #ddd;background-color:#666666;color:#ffffff;height:30px;line-height:28px;padding-left:1%;
 width:calc(15% - 2px);font-size:90%;margin-left:2px;font-weight:500}
 section#kisiselBilgi ul li.veri2{float:left;height:30px;line-height:28px;text-indent:4%;
-width:calc(15% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
+width:calc(15% - 2px);font-size:90%;font-weight:500;background-color:#7b1e72;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
 section#kisiselBilgi .ayir{display:none}
 section#kisiselBilgi .temizle{display:none}
 
@@ -1639,7 +1639,7 @@ amp-analytics {
     
     section#kisiselBilgi ul li.veri,
     section#kisiselBilgi ul li.veri2 {
-        background: #3d3d3d;
+        background: #7b1e72;
         color: #e0e0e0;
         border-color: #555;
     }
