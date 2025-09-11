@@ -63,7 +63,7 @@ summary{display:list-item}
 /* Body */
 body {
     margin: 0;
-    background: #f5f5f5;
+    background: #e5e5e5;
     font-family: 'Quicksand', sans-serif;
     font-weight: 400;
     color: #363636;
@@ -71,7 +71,7 @@ body {
     font-size: 15px;
 }
 
-body.body{background:#f2f2f2;font-family:Quicksand,sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
+body.body{background:#e5e5e5;font-family:Quicksand,sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
 
 /* Ana Container */
 .main-wrapper {
@@ -110,7 +110,7 @@ hr{border:0.5px solid #ddd;}
     position: relative;
     margin: 0;
     color: #fff;
-    background: #1B83A0;
+    background: linear-gradient(to right, #2F0743, #41295a);
 }
 
 .site-header .branding {
@@ -169,15 +169,407 @@ body.sticky-nav{padding-top:52px}
     background: rgba(0,0,0,.2);
 }
 
-.site-header .navbar-search,.site-header .navbar-toggle{color:#fff;font-weight:400;font-size:18px;position:absolute;top:0;z-index:99;border:none;background:rgba(0,0,0,.1);height:52px;line-height:50px;margin:0;padding:0;width:52px;text-align:center;outline:0;cursor:pointer;-webkit-transition:all .6s ease;-moz-transition:all .6s ease;-o-transition:all .6s ease;transition:all .6s ease}
-.site-header .navbar-search:hover,.site-header .navbar-toggle:hover{background:rgba(0,0,0,.1)}
-.site-header .navbar-search:focus,.site-header .navbar-toggle:focus{background:rgba(0,0,0,.2)}
-.site-header .navbar-toggle{font-size:21px;left:0}
-.site-header .navbar-search{font-size:18px;right:0;line-height:48px}
-
 /* Site Title */
-.sitebaslik{padding:4px;background:#666;color:#ffffff;font-size:20px;}
-.sitebaslik h1{margin:3px 0;}
+.sitebaslik{padding:4px;background-image: radial-gradient( circle farthest-corner at 50.4% 50.5%, rgba(135,2,35,1) 0%, rgba(251,32,86,1) 90% );color:#fff;font-size:16px;}
+.sitebaslik h1{margin:10px 0;}
+
+/* Lists */
+ul {list-style: none;margin:0;padding:0;}
+
+/* ============================================
+   RESPONSIVE ÜRÜN SHOWCASE SİSTEMİ
+   ============================================ */
+
+/* Ana Grid Container */
+.product-showcase {
+    text-align: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #fbfbfb;
+}
+
+/* Grid Öğesi - Mobile First: 5 sütun */
+.showcase-grid {
+    float: left;
+    margin: 2px auto;
+    padding: 1px;
+    box-sizing: border-box;
+    
+    /* Default: Mobilde 5 sütun (20%) */
+    width: 20%;
+}
+
+/* Grid İçindeki Liste */
+.showcase-grid ul {
+    float: left;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    list-style: none;
+}
+
+/* Ürün Kartı */
+.showcase-grid ul li.product-card {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+}
+
+/* Aspect ratio korunması */
+.showcase-grid ul li.product-card:before {
+    content: "";
+    display: block;
+    padding-top: 183.33%; /* 275/150 = 1.833 aspect ratio */
+}
+
+/* Ürün Linki */
+.showcase-grid ul li.product-card a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Ürün Görseli */
+.showcase-grid ul li.product-card amp-img,
+.showcase-grid ul li.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Hover efektleri */
+.showcase-grid ul li.product-card:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+    z-index: 2;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.showcase-grid ul li.product-card a:hover amp-img,
+.showcase-grid ul li.product-card a:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Float temizleme */
+.clear-float {
+    clear: both;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.product-showcase:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Loading placeholder */
+.showcase-grid ul li.product-card .loading-placeholder,
+.showcase-grid ul li.product-card .no-image {
+    background: #f0f0f0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Responsive Breakpoints - Mobile First */
+
+/* 6 sütun - Büyük Desktop (1400px+) */
+@media (min-width: 1400px) {
+    .showcase-grid {
+        width: 16.6666666667%; /* 6 sütun */
+    }
+}
+
+/* 5 sütun - Desktop (400px+) - DEFAULT */
+/* Zaten default olarak 20% = 5 sütun */
+
+/* 4 sütun - Küçük mobil (320px - 399px) */
+@media (max-width: 399px) {
+    .showcase-grid {
+        width: 25%; /* 4 sütun */
+    }
+}
+
+/* 3 sütun - Çok küçük mobil (280px ve altı) */
+@media (max-width: 280px) {
+    .showcase-grid {
+        width: 33.3333333333%; /* 3 sütun */
+    }
+}
+
+/* No products message */
+.no-products-found {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 20px;
+}
+
+/* ============================================
+   DESKTOP BLOG STİLLERİ
+   ============================================ */
+
+.desktop-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+    padding: 30px 20px;
+}
+
+.main-content {
+    min-width: 0;
+}
+
+.blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #1B83A0;
+}
+
+.blog-header h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.blog-header p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.articles-list {
+    margin-bottom: 40px;
+}
+
+.article-item {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.article-item:last-child {
+    border-bottom: none;
+}
+
+.article-meta {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.publish-date, .author-name {
+    margin-right: 15px;
+}
+
+.article-categories {
+    margin-top: 5px;
+}
+
+.category-tag {
+    background: #1B83A0;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 12px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.category-tag:hover {
+    background: #155a70;
+    color: #fff;
+}
+
+.article-title {
+    font-size: 28px;
+    margin: 15px 0;
+    line-height: 1.3;
+}
+
+.article-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.article-title a:hover {
+    color: #1B83A0;
+}
+
+.article-thumbnail {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.article-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.article-excerpt {
+    margin: 20px 0;
+    line-height: 1.7;
+    font-size: 16px;
+    color: #555;
+}
+
+.article-actions {
+    margin-top: 20px;
+}
+
+.read-more-btn {
+    background: #1B83A0;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    display: inline-block;
+}
+
+.read-more-btn:hover {
+    background: #155a70;
+    color: #fff;
+}
+
+/* Pagination */
+.pagination-wrapper {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.pagination-wrapper .page-numbers {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.pagination-wrapper .page-numbers.current {
+    background: #1B83A0;
+    color: #fff;
+    border-color: #1B83A0;
+}
+
+.pagination-wrapper .page-numbers:hover {
+    background: #f8f9fa;
+    border-color: #1B83A0;
+}
+
+/* Sidebar */
+.main-sidebar {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.widget {
+    margin-bottom: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.widget-title {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #1B83A0;
+    padding-bottom: 5px;
+}
+
+.widget ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.widget ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.widget ul li:last-child {
+    border-bottom: none;
+}
+
+.widget ul li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.widget ul li a:hover {
+    color: #1B83A0;
+}
+
+/* No articles message */
+.no-articles {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.no-articles h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.no-articles p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* ============================================
+   TEKİL ÜRÜN SAYFASI STİLLERİ (MEVCUT)
+   ============================================ */
 
 /* HTML Taslağı Buttons */
 .buttons {
@@ -200,13 +592,9 @@ body.sticky-nav{padding-top:52px}
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   text-shadow:0px 1px 0px rgba(0,0,0,0.5);
-  -ms-filter:"progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=1,Color=#ff123852,Positive=true)";zoom:1;
-  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=1,Color=#ff123852,Positive=true);
   -moz-box-shadow:0px 2px 2px rgba(0,0,0,0.2);
   -webkit-box-shadow:0px 2px 2px rgba(0,0,0,0.2);
   box-shadow:0px 2px 2px rgba(0,0,0,0.2);
-  -ms-filter:"progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=2,Color=#33000000,Positive=true)";
-  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=2,Color=#33000000,Positive=true);
 }
 
 .buttons span {
@@ -234,28 +622,13 @@ body.sticky-nav{padding-top:52px}
   -moz-box-shadow:0px 1px 0px rgba(255,255,255,0.5);
   -webkit-box-shadow:0px 1px 0px rgba(255,255,255,0.5);
   box-shadow:0px 1px 0px rgba(255,255,255,0.5);
-  -ms-filter:"progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=1,Color=#ccffffff,Positive=true)";
-  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=0,OffY=1,Color=#ccffffff,Positive=true);
 }
 
-.buttons.orange {
-  background: #FF7F00;
-}
-.buttons.purple {
-  background: #8e44ad;
-}
 .buttons.whatsapp {
-  background: #0c8832;
-}
-.buttons.telefon {
-  background: #128C7E;
+  background: #25D366;
 }
 
 .nav-links h2{font-size:16px;margin:10px 0;}
-.nav-links h2.tel{font-size:32px;}
-
-/* Lists */
-ul {list-style: none;margin:0;padding:0;}
 
 /* HTML Taslağı Kişisel Bilgi Tablosu */
 section#kisiselBilgi ul li{float:left;margin-bottom:1%;}
@@ -267,486 +640,10 @@ section#kisiselBilgi ul li.baslik2{float:left;border:0px solid #ddd;background-c
 width:calc(15% - 2px);font-size:90%;margin-left:2px;font-weight:500;}
 section#kisiselBilgi ul li.veri2{float:left;height:30px;line-height:28px;text-indent:4%;
 width:calc(15% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize;}
-section#kisiselBilgi ul li.ziyaret{float:left;margin-top:10px;height:40px;line-height:40px;text-indent:1%;
-width:31.8%;font-size:14px;background-color:#fbfbfb;border:1px dashed #ddd;color:#777777;}
 section#kisiselBilgi .ayir{display:none;}
 section#kisiselBilgi .temizle{display:none;}
 
-/* HTML Taslağı Yan Çerçeve */
-.yan-cerceve{
-width:75px;
-height:75px;
-background:#ddd;
-float:left;
-margin:0;
-border:2px solid #ddd;
-border-radius:3px; margin-right:7px;
-}
-amp-img.yan-resim, .yan-resim {
-object-fit: contain;
-max-width:100%;
-max-height:100%;
-}
-
-.text-small{font-size:11px;}
-
-.vipliste {
-max-width: 100%;
-margin-top:10px;
-}
-
-.vipliste2 {
-width:99%;
-margin: auto;
-}
-
-.vip{height:auto; width:50%;border:2px solid #fff;float:left;margin:2px 0;}
-.gold{height:auto; width:25%;border:2px solid #fff;float:left;margin:2px 0;}
-.platin{height:auto; width:100%;border:2px solid #fff;float:left;margin:2px 0;}
-
-/* Mobil ÜrÃ¼n Grid'i */
-.mobile-products-container {
-    padding: 10px;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 3px;
-}
-
-@media only screen and (max-width: 399px) {
-    .grid-container {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-@media only screen and (min-width: 400px) {
-    .grid-container {
-        grid-template-columns: repeat(5, 1fr);
-    }
-}
-
-/* ÜrÃ¼n KartlarÄ± */
-.product-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 3px;
-    box-shadow: 0px 0px 2px 0px #555;
-    background: #fff;
-}
-
-.product-image-container {
-    position: relative;
-    width: 100%;
-    height: 275px;
-}
-
-.product-image, .no-image-placeholder {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.no-image-placeholder {
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 12px;
-}
-
-/* ÜrÃ¼n Overlay */
-.product-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(0deg, rgba(0,145,186,0.9) 0%, rgba(255,255,255,0) 100%);
-    color: #fff;
-    padding: 10px 5px;
-}
-
-.product-location {
-    position: absolute;
-    top: -60px;
-    left: 0;
-    right: 0;
-    background: linear-gradient(1deg, rgba(0,0,0,0) 21%, #000 98%);
-    color: #fff;
-    font-size: 10px;
-    text-align: center;
-    padding: 2px;
-    font-family: 'Khand', sans-serif;
-}
-
-.product-title {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 3px;
-    font-family: 'Khand', sans-serif;
-}
-
-.product-phone {
-    font-size: 14px;
-    background: rgba(0,0,0,0.1);
-    padding: 2px 4px;
-    text-align: center;
-    margin: 2px 0;
-    font-family: 'Khand', sans-serif;
-}
-
-.product-meta {
-    font-size: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.product-age, .product-price {
-    background: rgba(0,0,0,0.2);
-    padding: 1px 3px;
-    border-radius: 2px;
-}
-
-/* Desktop Basit Blog */
-.desktop-blog-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background: #fff;
-    min-height: 100vh;
-}
-
-.blog-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #1B83A0;
-}
-
-.blog-header h1 {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.blog-header p {
-    font-size: 16px;
-    color: #666;
-    margin: 0;
-}
-
-.articles-list {
-    margin-bottom: 40px;
-}
-
-.blog-post {
-    margin-bottom: 40px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #eee;
-}
-
-.blog-post:last-child {
-    border-bottom: none;
-}
-
-.post-meta {
-    margin-bottom: 15px;
-    font-size: 14px;
-    color: #666;
-}
-
-.post-date, .post-author {
-    margin-right: 15px;
-}
-
-.post-categories {
-    margin-top: 5px;
-}
-
-.category-link {
-    background: #1B83A0;
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-size: 12px;
-    margin-right: 8px;
-    display: inline-block;
-}
-
-.category-link:hover {
-    background: #155a70;
-    color: #fff;
-}
-
-.post-title {
-    font-size: 28px;
-    margin: 15px 0;
-    line-height: 1.3;
-}
-
-.post-title a {
-    color: #333;
-    text-decoration: none;
-}
-
-.post-title a:hover {
-    color: #1B83A0;
-}
-
-.post-thumbnail {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.post-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.post-excerpt {
-    margin: 20px 0;
-    line-height: 1.7;
-    font-size: 16px;
-    color: #555;
-}
-
-.post-actions {
-    margin-top: 20px;
-}
-
-.read-more {
-    background: #1B83A0;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.3s ease;
-    display: inline-block;
-}
-
-.read-more:hover {
-    background: #155a70;
-    color: #fff;
-}
-
-/* Basit Pagination */
-.simple-pagination {
-    text-align: center;
-    margin: 40px 0;
-}
-
-.simple-pagination a, .simple-pagination span {
-    display: inline-block;
-    padding: 10px 15px;
-    margin: 0 5px;
-    border: 1px solid #ddd;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.simple-pagination .current {
-    background: #1B83A0;
-    color: #fff;
-    border-color: #1B83A0;
-}
-
-.simple-pagination a:hover {
-    background: #f8f9fa;
-    border-color: #1B83A0;
-}
-
-/* No Articles Message */
-.no-articles {
-    text-align: center;
-    padding: 60px 20px;
-    color: #666;
-}
-
-.no-articles h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.no-articles p {
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-/* Tekil ÜrÃ¼n SayfasÄ± */
-.single-product-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.back-button-section {
-    margin-bottom: 20px;
-}
-
-.back-button {
-    background: #1B83A0;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 14px;
-    display: inline-block;
-}
-
-.product-info-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    overflow: hidden;
-    margin-bottom: 30px;
-}
-
-.product-images {
-    padding: 20px;
-    text-align: center;
-}
-
-.main-image {
-    margin-bottom: 15px;
-}
-
-.featured-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.image-gallery {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.gallery-item {
-    width: 100px;
-    height: 130px;
-    overflow: hidden;
-    border-radius: 4px;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.product-details {
-    padding: 20px;
-    border-top: 1px solid #eee;
-}
-
-.product-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.product-basic-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.info-item {
-    display: flex;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.info-label {
-    font-weight: 600;
-    margin-right: 10px;
-    min-width: 80px;
-}
-
-.info-value {
-    color: #666;
-}
-
-.info-value.price {
-    color: #1B83A0;
-    font-weight: 600;
-}
-
-/* İletişim Bölümü */
-.contact-section {
-    margin: 20px 0;
-    text-align: center;
-}
-
-.whatsapp-button {
-    margin-bottom: 15px;
-}
-
-.whatsapp-link {
-    background: #25D366;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    display: inline-block;
-    transition: background 0.3s ease;
-}
-
-.whatsapp-link:hover {
-    background: #1aab4c;
-}
-
-.whatsapp-icon {
-    margin-right: 8px;
-}
-
-.phone-display {
-    font-size: 18px;
-    color: #333;
-}
-
-/* ÜrÃ¼n AÃ§Ä±klamasÄ± */
-.product-description {
-    margin: 20px 0;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 8px;
-}
-
-.product-description h3 {
-    margin-top: 0;
-    color: #333;
-}
-
-.description-content {
-    line-height: 1.6;
-    color: #666;
-}
-
-/* Default Description */
-.default-description {
-    margin: 20px 0;
-    line-height: 1.6;
-    color: #666;
-}
-
-/* Gallery Styles */
+/* Gallery Styles (Tekil ürün sayfası için) */
 .product-image-slider {
     margin-bottom: 20px;
 }
@@ -754,12 +651,20 @@ margin: auto;
 .main-image-container {
     text-align: center;
     margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f5f5f5;
 }
 
 .main-product-image {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+    display: block;
+    margin: 0 auto;
 }
 
 .gallery-thumbs {
@@ -767,6 +672,9 @@ margin: auto;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 10px;
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .gallery-thumb {
@@ -775,188 +683,42 @@ margin: auto;
     object-fit: cover;
     border-radius: 4px;
     cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    flex-shrink: 0;
 }
 
-.gallery-thumb:hover, .gallery-thumb.active {
+.gallery-thumb:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    border-color: rgba(27, 131, 160, 0.5);
+}
+
+.gallery-thumb.active {
     border-color: #1B83A0;
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(27, 131, 160, 0.3);
 }
 
-/* Benzer ÜrÃ¼nler */
-.related-products {
-    margin: 30px 0;
-}
-
-.related-products h3 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.related-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
-}
-
-.related-product {
-    position: relative;
-}
-
-.related-image {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.related-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.related-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-    color: #fff;
-    padding: 10px;
-    font-size: 12px;
-}
-
-.related-title {
-    font-weight: 600;
-    margin-bottom: 3px;
-}
-
-.related-location, .related-age {
-    font-size: 10px;
-    opacity: 0.9;
-}
-
-/* Uyarı Bölümleri */
-.warning-section {
-    margin: 30px 0;
-}
-
-.warning-box, .info-box {
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.warning-box {
-    background: #fff3cd;
-    border-left: 4px solid #ffc107;
-}
-
-.info-box {
-    background: #d1ecf1;
-    border-left: 4px solid #17a2b8;
-}
-
-.warning-box h4, .info-box h5 {
-    margin-top: 0;
-    color: #333;
-}
+/* ============================================
+   SIDEBAR ve FOOTER
+   ============================================ */
 
 /* Sidebar */
 .istanbul-amp-sidebar{background:#fff;max-width:350px;min-width:270px;padding-bottom:30px}
-.istanbul-amp-sidebar .sidebar-container{width:100%}
-.istanbul-amp-sidebar .close-sidebar{font-size:18px;border:none;color:#333;position:absolute;top:12px;right:0px;background:#fff;width:22px;height:32px;line-height:32px;text-align:center;padding:0;outline:0;-webkit-transition:all .6s ease;-moz-transition:all .6s ease;-o-transition:all .6s ease;transition:all .6s ease;cursor:pointer}
-.istanbul-amp-sidebar .close-sidebar:hover{background:#999;}
-.sidebar-brand{color:#fff;padding: 8px 20px 8px 5px;text-align:left;font-family:Quicksand,sans-serif;line-height:2}
+.istanbul-amp-sidebar .sidebar-container{width:100%;background:#f6f6f6;}
+.istanbul-amp-sidebar .close-sidebar{font-size:16px;border:none;color:#fff;position:absolute;top:10px;right:10px;background:#444;width:20px;height:32px;line-height:32px;text-align:center;padding:0;outline:0;transition:all .6s ease;cursor:pointer}
+.istanbul-amp-sidebar .close-sidebar:hover{background:#222;}
+.sidebar-brand{color:#fff;padding:35px 24px 24px;text-align:left;font-family:Quicksand,sans-serif;line-height:2}
 .sidebar-brand .logo .amp-image-tag{display:inline-block;margin:0}
-.sidebar-brand .brand-name{font-weight:500;font-size:18px}
-.sidebar-brand .brand-description{font-weight:400;font-size:14px;line-height:1.4;margin-top:4px}
-.istanbul-amp-sidebar .amp-menu{margin-top:15px}
-.istanbul-amp-sidebar .social-list-wrapper{margin:17px 0 0}
-.sidebar-footer{border-top:1px solid rgba(0,0,0,.09);font-family:Quicksand,sans-serif;font-size:13px;padding:20px 15px;margin-top:15px;color:#848484;line-height:1.7}
-
-.amp-menu div{padding:0}
-.amp-menu h6,.amp-menu section{-webkit-transition:all .3s ease;-moz-transition:all .3s ease;-o-transition:all .3s ease;transition:all .3s ease}
-.amp-menu h6[aria-expanded=false]{background:0 0;border:none}
-.amp-menu section[expanded]{color:#363636;background:#eee;background:rgba(0,0,0,.08);padding-left:10px}
-.amp-menu section[expanded]>h6{margin-left:-10px;background:0 0}
-.amp-menu a,.amp-menu h6{color:inherit;font-size:1.3rem;font-weight:300;padding:0;border:none}
-.amp-menu h6 a{padding:0;margin:0}
-.amp-menu a,.amp-menu span{color:#565656;padding:10px 0 10px 20px;display:block;position:relative;-webkit-transition:all ease-in-out .22s;transition:all ease-in-out .22s;text-decoration:none;font-size:14px;font-weight:400;font-family:Quicksand,sans-serif}
-.amp-menu a:hover,.amp-menu span:hover{background:rgba(0,0,0,.06)}
-.amp-menu span:hover>a{background:0 0}
-.amp-menu span span{padding:0;margin:0;display:inline-block}
-.amp-menu span span:after{display:none}
-.amp-menu h6 span:after{position:absolute;right:0;top:0;font-family:FontAwesome;font-size:12px;line-height:38px;content:'\f0dd';color:#363636;-webkit-transition:all .4s ease;-moz-transition:all .4s ease;-o-transition:all .4s ease;transition:all .4s ease;width:40px;text-align:center}
-.amp-menu section[expanded]>h6 span:after{-webkit-transform:rotate(180deg);tranform:rotate(180deg);top:4px}
-.amp-menu .menu-item:not(.menu-item-has-children){padding:0}
-.amp-menu span.menu-item-deep.menu-item-deep{padding:0 0 0 25px}
-.amp-menu i{font-size:14px;margin-right:5px;margin-top:-3px}
-
-.main-sidebar {
-    width: 300px;
-    padding: 20px;
-    background: #f9f9f9;
-}
-
-.widget {
-    margin-bottom: 30px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.widget-title {
-    color: #333;
-    font-size: 16px;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #1B83A0;
-    padding-bottom: 5px;
-}
-
-/* Pagination */
-.pagination-container {
-    margin: 30px 0;
-    text-align: center;
-}
-
-.pagination-container a, .pagination-container span {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 0 2px;
-    border: 1px solid #ddd;
-    color: #333;
-    text-decoration: none;
-}
-
-.pagination-container .current {
-    background: #1B83A0;
-    color: #fff;
-    border-color: #1B83A0;
-}
-
-.pagination-container a:hover {
-    background: #f5f5f5;
-}
+.sidebar-brand.type-text{padding-top:10px}
+.sidebar-brand .brand-name{font-weight:500;font-size:15px}
+.sidebar-brand .brand-description{font-weight:400;font-size:12px;line-height:1.4;margin-top:4px}
 
 /* Footer */
-.site-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-
-.copyright {
-    font-size: 13px;
-    margin: 0;
-}
-
-/* Istanbul AMP Footer */
-.istanbul-amp-footer{margin:0}
+.istanbul-amp-footer{margin:0;background:#f3f3f3}
 .istanbul-amp-footer.sticky-footer{position:fixed;bottom:0;left:0;right:0}
 .istanbul-amp-footer-nav{border-top:1px solid rgba(0,0,0,.1);background:#fff;padding:14px 15px}
 .istanbul-amp-copyright{padding:17px 10px;text-align:center;font-family:Quicksand,sans-serif;font-weight:400;color:#494949;border-top:1px solid rgba(0,0,0,.1);font-size:13px}
@@ -968,118 +730,59 @@ margin: auto;
 .footer-navigation .fa{margin-right:5px}
 
 .istanbul-amp-main-link{display:block;text-align:center;font-weight:700;margin:6px 0 12px}
-.istanbul-amp-main-link a{color:#fff;text-decoration:none;padding:0 15px;display:inline-block;border:1px solid rgba(0,0,0,.08);border-radius:33px;line-height:26px;font-size:12px;font-weight:400}
+.istanbul-amp-main-link a{color:#fff;text-decoration:none;padding:0 15px;display:inline-block;border:1px solid rgba(0,0,0,.08);border-radius:33px;line-height:26px;font-size:12px;font-weight:400;background: linear-gradient(to right, #2F0743, #41295a);}
 .istanbul-amp-main-link a .fa{margin-right:5px}
+.istanbul-amp-main-link a:hover{background: linear-gradient(to right, #41295a, #2F0743);}
 
-/* Footer Links */
+/* Footer content wrapper */
 .footer-content {
-    max-width: 800px;
+    max-width: 780px;
     margin: 0 auto;
 }
 
+/* Footer navigation styles */
 .footer-nav {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
-.footer-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.footer-menu a {
-    color: #fff;
-    text-decoration: none;
-    padding: 5px 10px;
-}
-
-.footer-menu a:hover {
-    color: #1B83A0;
-}
-
-.footer-links {
-    margin-top: 15px;
-}
-
-.footer-links a {
-    color: #ccc;
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 14px;
-}
-
-.footer-links a:hover {
-    color: #fff;
-}
-
-.mobile-quick-actions {
+.footer-navigation {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-.quick-action-btn {
-    background: #1B83A0;
-    color: #fff;
-    padding: 10px 15px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: background 0.3s ease;
+.footer-navigation li {
+    margin: 0;
 }
 
-.quick-action-btn:hover {
-    background: #155a70;
+.footer-navigation a {
+    padding: 5px 10px;
+    transition: color 0.3s ease;
 }
 
-/* Theme Colors */
-.ilan-liste a.post-read-more:hover,
-.post-terms.cats .term-type,
-.post-terms a:hover,
-.search-form .search-submit,
-.istanbul-amp-main-link a,
-.sidebar-brand,
-.site-header{
-background: linear-gradient(to right, #004a7f, #004a7f);
+.footer-navigation a:hover {
+    color: #1B83A0;
 }
 
-.single-post .post-meta a,
-.entry-content ul.bs-shortcode-list li:before,
-a{
-color: #353233;
-}
+/* ============================================
+   RESPONSIVE AYARLAR
+   ============================================ */
 
-/* Other Colors */
-body.body {
-background:#e5e5e5;
-}
-
-.istanbul-amp-wrapper {
-background:#ffffff;
-color: #363636;
-}
-
-.istanbul-amp-footer {
-background:#f3f3f3;
-}
-
-.istanbul-amp-footer-nav {
-background:#ffffff;
-}
-
-/* Responsive */
+/* Tablet ve altı */
 @media (max-width: 768px) {
     .wrap {
         padding: 1%;
     }
     
-    .vip {
-        width: 33.33%;
+    .content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 15px 10px;
+    }
+    
+    .main-sidebar {
+        display: none;
     }
     
     section#kisiselBilgi ul li.baslik,
@@ -1094,6 +797,7 @@ background:#ffffff;
     
     .gallery-thumbs {
         gap: 5px;
+        padding: 5px;
     }
     
     .gallery-thumb {
@@ -1101,64 +805,17 @@ background:#ffffff;
         height: 60px;
     }
     
-    .desktop-blog-container {
-        padding: 10px;
-    }
-    
-    .articles-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .main-sidebar {
-        display: none;
-    }
-    
-    .single-article-container,
-    .single-product-container {
-        padding: 10px;
+    .blog-header h1 {
+        font-size: 28px;
     }
     
     .article-title {
         font-size: 24px;
     }
-    
-    .product-basic-info {
-        grid-template-columns: 1fr;
-    }
-    
-    .share-buttons {
-        flex-direction: column;
-    }
-    
-    .nav-links {
-        flex-direction: column;
-    }
-    
-    .related-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    
-    .footer-menu {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .mobile-quick-actions {
-        flex-direction: column;
-        align-items: center;
-    }
 }
 
+/* Mobil */
 @media (max-width: 480px) {
-    .grid-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .vip {
-        width: 50%;
-    }
-    
     section#kisiselBilgi ul li.baslik,
     section#kisiselBilgi ul li.veri,
     section#kisiselBilgi ul li.baslik2,
@@ -1166,61 +823,76 @@ background:#ffffff;
         width: calc(50% - 2px);
     }
     
-    .product-title {
+    .gallery-thumb {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .gallery-thumbs {
+        gap: 3px;
+    }
+    
+    .article-title {
         font-size: 20px;
     }
     
-    .related-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .whatsapp-link {
-        padding: 10px 20px;
-        font-size: 14px;
+    .blog-header h1 {
+        font-size: 24px;
     }
 }
 
+/* ============================================
+   TEMA RENKLERİ ve GENEL STİLLER
+   ============================================ */
+
+/* Theme Colors */
+a{color: #353233;}
+body.body {background:#e5e5e5;}
+.istanbul-amp-wrapper {background:#ffffff;color: #363636;}
+.istanbul-amp-footer {background:#f3f3f3;}
+.istanbul-amp-footer-nav {background:#ffffff;}
+
 /* Links */
 a {
-    color: #1B83A0;
+    color: #353233;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #155a70;
+    color: #1B83A0;
 }
 
-/* İçerik olmadığında gösterilecek mesajlar */
-.no-products, .no-articles {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-}
-
-/* AMP spesifik düzenlemeler */
-amp-img {
-    background-color: #f5f5f5;
-}
-
-/* Smooth scroll */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Focus stilleri erişebilirlik için */
+/* Accessibility */
 button:focus, a:focus, input:focus {
     outline: 2px solid #1B83A0;
     outline-offset: 2px;
 }
 
-/* Print stilleri */
+.showcase-grid ul li.product-card a:focus {
+    outline: 2px solid #1B83A0;
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .showcase-grid ul li.product-card:hover,
+    .showcase-grid ul li.product-card a:hover amp-img,
+    .showcase-grid ul li.product-card a:hover img,
+    .gallery-thumb:hover,
+    .gallery-thumb.active {
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Print styles */
 @media print {
     .site-header,
-    .site-footer,
-    .social-share,
-    .related-articles,
-    .contact-section {
+    .istanbul-amp-footer,
+    .navbar-toggle,
+    .navbar-search,
+    .main-sidebar {
         display: none;
     }
     
@@ -1232,4 +904,14 @@ button:focus, a:focus, input:focus {
         box-shadow: none;
         max-width: none;
     }
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* AMP specific */
+amp-img {
+    background-color: #f5f5f5;
 }

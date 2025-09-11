@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer template
+ * Footer template - HTML Örneğine Uygun
  */
 
 $theme = new AMP_Responsive_Theme();
@@ -8,27 +8,31 @@ $is_mobile = $theme->is_mobile();
 $is_amp = $theme->is_amp();
 ?>
 
+        </main> <!-- Main content kapatma -->
+        
         <!-- Footer -->
-        <footer class="site-footer">
-            <div class="footer-content">
+        <footer class="site-footer istanbul-amp-footer">
+            <div class="footer-content istanbul-amp-footer-nav">
                 <div class="footer-nav">
                     <?php
                     wp_nav_menu(array(
                         'theme_location' => 'primary',
-                        'menu_class' => 'footer-menu',
+                        'menu_class' => 'footer-navigation',
                         'container' => false,
                         'fallback_cb' => false,
                     ));
                     ?>
                 </div>
                 
-                <div class="footer-info">
-                    <p class="copyright">
-                        <?php bloginfo('name'); ?>
-                    </p>
-                    
+                <div class="istanbul-amp-main-link">
+                    <a href="<?php echo home_url(); ?>" target="_top">
+                        <i class="fa fa-external-link-square"></i> Ana Sayfaya Dön
+                    </a>
                 </div>
-                
+            </div>
+            
+            <div class="istanbul-amp-copyright">
+                <?php bloginfo('name'); ?>
             </div>
         </footer>
         

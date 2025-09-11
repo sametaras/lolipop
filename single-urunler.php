@@ -34,33 +34,16 @@ if (have_posts()):
     <div class="text-center">
         <a href="<?php echo home_url(); ?>">
             <?php if ($is_amp): ?>
-                <amp-img src="<?php echo get_template_directory_uri(); ?>/elit-logo.png" 
+                <amp-img src="<?php echo get_template_directory_uri(); ?>/logo.jpg" 
                          alt="<?php bloginfo('name'); ?>" 
                          width="300" height="100" layout="responsive">
                 </amp-img>
             <?php else: ?>
-                <img src="<?php echo get_template_directory_uri(); ?>/elit-logo.png" 
+                <img src="<?php echo get_template_directory_uri(); ?>/logo.jpg" 
                      alt="<?php bloginfo('name'); ?>" class="site-logo">
             <?php endif; ?>
         </a>
     </div>
-    
-    <!-- V-link banner -->
-    <div class="text-center">
-        <a href="<?php echo home_url(); ?>">
-            <?php if ($is_amp): ?>
-                <amp-img src="<?php echo get_template_directory_uri(); ?>/v-link.jpg" 
-                         alt="logo" 
-                         width="300" height="28" layout="responsive">
-                </amp-img>
-            <?php else: ?>
-                <img src="<?php echo get_template_directory_uri(); ?>/v-link.jpg" 
-                     alt="logo" class="v-link-banner">
-            <?php endif; ?>
-        </a>
-    </div>
-    
-    <!-- Ana başlık -->
     <div class="text-center sitebaslik">
         <h1><?php echo esc_html($title); ?></h1>
     </div>

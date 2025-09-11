@@ -164,7 +164,7 @@ class AMP_Responsive_Theme {
      * AMP sayfası kontrolü
      */
     public function is_amp() {
-        return isset($_GET['amp']) || (function_exists('is_amp_endpoint') && is_amp_endpoint());
+        return wp_is_mobile();
     }
     
     /**
