@@ -11,91 +11,82 @@ $is_mobile = $theme->is_mobile();
 $is_amp = $theme->is_amp();
 ?>
 
-<div class="wrap">
-    <?php if ($is_mobile): ?>
-        <!-- MOBİL ÜRÜN LİSTESİ - Responsive Grid Sistemi -->
-        <div class="product-showcase">
-            <?php
-            $products = new WP_Query(array(
-                'post_type' => 'urunler',
-                'posts_per_page' => 360, // Daha fazla ürün göster
-                'post_status' => 'publish',
-                'meta_query' => array(
-                    array(
-                        'key' => 'urun_telefon',
-                        'value' => '',
-                        'compare' => '!='
-                    )
-                ),
-                'orderby' => array(
-                    'meta_value_num' => 'ASC',
-                    'date' => 'DESC'
-                ),
-                'meta_key' => 'urun_sira'
-            ));
-            
-            if ($products->have_posts()):
-                while ($products->have_posts()): $products->the_post();
-                    $product_id = get_the_ID();
-                    $title = get_the_title();
-                    $image = get_the_post_thumbnail_url($product_id, 'product-thumb');
-                    $location = get_product_location($product_id);
-                    $age = get_product_age($product_id);
-                    $phone = get_product_phone($product_id);
-                    
-                    // Fallback image yoksa
-                    if (!$image) {
-                        $image = get_template_directory_uri() . '/assets/images/placeholder.jpg';
-                    }
-                    ?>
-                    <div class="showcase-grid">
-                        <ul>
-                            <li class="product-card">
-                                <a href="<?php the_permalink(); ?>" rel="nofollow" target="_blank">
-                                    <?php if ($is_amp): ?>
-                                        <amp-img 
-                                            alt="<?php echo esc_attr($title); ?>" 
-                                            height="275" 
-                                            layout="responsive" 
-                                            src="<?php echo esc_url($image); ?>" 
-                                            width="150">
-                                        </amp-img>
-                                    <?php else: ?>
-                                        <img 
-                                            src="<?php echo esc_url($image); ?>" 
-                                            alt="<?php echo esc_attr($title); ?>" 
-                                            width="150" 
-                                            height="275"
-                                            loading="lazy">
-                                    <?php endif; ?>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <?php
-                endwhile;
-                wp_reset_postdata();
-            else:
+<?php if ($is_mobile): ?>
+    <!-- MOBİL ÜRÜN LİSTESİ - Responsive Grid Sistemi -->
+    <div class="product-showcase" style="background: #fbfbfb; min-height: 100vh;"><?php /* Inline style ile zorla */ ?>
+        <?php
+        $products = new WP_Query(array(
+            'post_type' => 'urunler',
+            'posts_per_page' => 360, // Daha fazla ürün göster
+            'post_status' => 'publish',
+            'meta_query' => array(
+                array(
+                    'key' => 'urun_telefon',
+                    'value' => '',
+                    'compare' => '!='
+                )
+            ),
+            'orderby' => array(
+                'meta_value_num' => 'ASC',
+                'date' => 'DESC'
+            ),
+            'meta_key' => 'urun_sira'
+        ));
+        
+        if ($products->have_posts()):
+            echo '<div class="mobile-simple-grid">';
+            while ($products->have_posts()): $products->the_post();
+                $product_id = get_the_ID();
+                $title = get_the_title();
+                $image = get_the_post_thumbnail_url($product_id, 'product-thumb');
+                $location = get_product_location($product_id);
+                $age = get_product_age($product_id);
+                $phone = get_product_phone($product_id);
+                
+                // Fallback image yoksa
+                if (!$image) {
+                    $image = get_template_directory_uri() . '/assets/images/placeholder.jpg';
+                }
                 ?>
-                <div class="no-products-found">
-                    <p>Henüz ürün eklenmemiş.</p>
+                <div class="simple-grid-item">
+                    <a href="<?php the_permalink(); ?>" class="simple-product-link" rel="nofollow" target="_blank">
+                        <?php if ($is_amp): ?>
+                            <amp-img 
+                                alt="<?php echo esc_attr($title); ?>" 
+                                height="275" 
+                                layout="responsive" 
+                                src="<?php echo esc_url($image); ?>" 
+                                width="150"
+                                class="simple-product-image">
+                            </amp-img>
+                        <?php else: ?>
+                            <img 
+                                src="<?php echo esc_url($image); ?>" 
+                                alt="<?php echo esc_attr($title); ?>" 
+                                width="150" 
+                                height="275"
+                                class="simple-product-image"
+                                loading="lazy">
+                        <?php endif; ?>
+                    </a>
                 </div>
                 <?php
-            endif;
+            endwhile;
+            echo '</div>'; // .mobile-simple-grid sonu
+            wp_reset_postdata();
+        else:
             ?>
-            
-            <!-- Float temizleme -->
-            <div class="clear-float"></div>
-        </div>
-        
-        <!-- Mobil için ek padding -->
-        <div class="margintop20 clearfix"></div>
-        <div class="margintop20 clearfix"></div>
-        
-    </div> <!-- .wrap sonu -->
-        
-    <?php else: ?>
-        <!-- DESKTOP MAKALE LİSTESİ -->
+            <div class="no-products-found">
+                <p>Henüz ürün eklenmemiş.</p>
+            </div>
+            <?php
+        endif;
+        ?>
+    </div>
+    
+<?php else: ?>
+    <!-- DESKTOP MAKALE LİSTESİ -->
+    <div class="wrap">
         <div class="desktop-content">
             <div class="content-wrapper">
                 <div class="main-content">
@@ -250,8 +241,8 @@ $is_amp = $theme->is_amp();
                 </aside>
             </div>
         </div>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
 
 <!-- Schema.org için yapılandırılmış veri -->
 <script type="application/ld+json">
@@ -283,6 +274,7 @@ $is_amp = $theme->is_amp();
     "itemListElement": [
         <?php
         $counter = 1;
+        $products->rewind_posts(); // Query'yi başa sar
         while ($products->have_posts()): $products->the_post();
             $product_id = get_the_ID();
             $title = get_the_title();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Header template - SEO Optimized
+ * Header template - SEO Optimized with AMP CSS
  */
 
 $theme = new AMP_Responsive_Theme();
@@ -115,68 +115,47 @@ if (!is_front_page()) {
             </style>
         </noscript>
         
-        <!-- AMP Custom CSS -->
+        <!-- AMP Custom CSS - Style.css içeriğini buraya dahil et -->
         <style amp-custom>
-            /* Critical CSS for AMP */
-            *{box-sizing:border-box}
-            body{margin:0;background:#e5e5e5;font-family:'Quicksand',sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
-            .main-wrapper{background:#fff;max-width:780px;margin:0 auto;min-height:100vh}
-            
-            /* Header */
-            .site-header{height:52px;width:100%;position:relative;margin:0;color:#fff;background:linear-gradient(to right,#004a7f,#004a7f)}
-            .site-header .branding{display:block;text-align:center;font-size:20px;font-weight:400;text-decoration:none;font-family:Quicksand,sans-serif;color:#fff;position:absolute;top:0;width:100%;padding:10px 55px;z-index:9;height:52px;line-height:32px}
-            .navbar-toggle,.navbar-search{color:#fff;font-weight:400;font-size:18px;position:absolute;top:0;z-index:99;border:none;background:rgba(0,0,0,.1);height:52px;line-height:50px;margin:0;padding:0;width:52px;text-align:center;outline:0;cursor:pointer;transition:all .6s ease}
-            .navbar-toggle{font-size:21px;left:0}
-            .navbar-search{font-size:18px;right:0;line-height:48px}
-            .navbar-toggle:hover,.navbar-search:hover{background:rgba(0,0,0,.2)}
-            
-            /* Mobile Grid */
-            .mobile-simple-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:2px;background:#fbfbfb}
-            .simple-grid-item{position:relative;aspect-ratio:150/275;overflow:hidden}
-            .simple-product-link{display:block;width:100%;height:100%}
-            .simple-product-image{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-            .simple-product-link:hover .simple-product-image{transform:scale(1.02)}
-            
-            /* Desktop Styles */
-            .desktop-content{max-width:1200px;margin:0 auto;background:#fff}
-            .content-wrapper{display:grid;grid-template-columns:1fr 300px;gap:30px;padding:30px 20px}
-            .main-content{min-width:0}
-            .blog-header{text-align:center;margin-bottom:40px;padding-bottom:20px;border-bottom:2px solid #1B83A0}
-            .blog-header h1{font-size:36px;color:#333;margin-bottom:10px;font-weight:600}
-            .article-item{margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid #eee}
-            .article-title{font-size:28px;margin:15px 0;line-height:1.3}
-            .article-title a{color:#333;text-decoration:none}
-            .article-title a:hover{color:#1B83A0}
-            .category-tag{background:#1B83A0;color:#fff;padding:2px 8px;border-radius:12px;text-decoration:none;font-size:12px}
-            .read-more-btn{background:#1B83A0;color:#fff;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:500;transition:background .3s ease;display:inline-block}
-            
-            /* Sidebar */
-            .amp-sidebar{background:#fff;max-width:350px;min-width:270px;padding-bottom:30px}
-            .close-sidebar{font-size:25px;border:none;color:#fff;position:absolute;top:10px;right:0px;background:0 0;width:32px;height:32px;line-height:32px;text-align:center;padding:0;outline:0;cursor:pointer}
-            .sidebar-brand{color:#fff;padding:0px 50px 10px 5px;text-align:left;font-family:Quicksand,sans-serif;line-height:2;background:linear-gradient(to right,#004a7f,#004a7f)}
-            .sidebar-brand .brand-name{font-weight:500;font-size:18px}
-            .sidebar-brand .brand-description{font-weight:400;font-size:14px;line-height:1.4;margin-top:4px}
-            
-            /* Footer */
-            .istanbul-amp-footer{margin:0;background:#f3f3f3}
-            .istanbul-amp-copyright{padding:17px 10px;text-align:center;font-family:Quicksand,sans-serif;font-weight:400;color:#494949;border-top:1px solid rgba(0,0,0,.1);font-size:13px}
-            
-            /* Responsive */
-            @media (max-width:399px){.mobile-simple-grid{grid-template-columns:repeat(4,1fr)}}
-            @media (max-width:768px){.content-wrapper{grid-template-columns:1fr;gap:20px;padding:15px 10px}.sidebar{display:none}}
-            
-            /* Utility */
-            .text-center{text-align:center}
-            .margintop20{margin-top:20px}
-            .clearfix:after{content:'';display:table;clear:both}
-            a{color:#353233;text-decoration:none;transition:color .3s ease}
-            a:hover{color:#1B83A0}
-            
-            /* No content */
-            .no-products,.no-articles{text-align:center;padding:40px;color:#666}
-            
-            /* SEO Hidden */
-            .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+            <?php
+            // Style.css dosyasının içeriğini inline olarak dahil et
+            $style_path = get_template_directory() . '/style.css';
+            if (file_exists($style_path)) {
+                $css_content = file_get_contents($style_path);
+                
+                // AMP için CSS temizleme
+                $css_content = preg_replace('/\/\*.*?\*\//s', '', $css_content); // Yorumları temizle
+                $css_content = preg_replace('/\s+/', ' ', $css_content); // Fazla boşlukları temizle
+                $css_content = str_replace('!important', '', $css_content); // !important'ları temizle (AMP'de yasak)
+                
+                echo trim($css_content);
+            } else {
+                // Fallback critical CSS
+                echo '
+                *{box-sizing:border-box}
+                body{margin:0;background:#e5e5e5;font-family:"Quicksand",sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
+                .main-wrapper{background:#fff;max-width:780px;margin:0 auto;min-height:100vh}
+                .site-header{height:52px;width:100%;position:relative;margin:0;color:#fff;background:linear-gradient(to right,#004a7f,#004a7f)}
+                .site-header .branding{display:block;text-align:center;font-size:20px;font-weight:400;text-decoration:none;font-family:Quicksand,sans-serif;color:#fff;position:absolute;top:0;width:100%;padding:10px 55px;z-index:9;height:52px;line-height:32px}
+                .navbar-toggle,.navbar-search{color:#fff;font-weight:400;font-size:18px;position:absolute;top:0;z-index:99;border:none;background:rgba(0,0,0,.1);height:52px;line-height:50px;margin:0;padding:0;width:52px;text-align:center;outline:0;cursor:pointer;transition:all .6s ease}
+                .navbar-toggle{font-size:21px;left:0}
+                .navbar-search{font-size:18px;right:0;line-height:48px}
+                .navbar-toggle:hover,.navbar-search:hover{background:rgba(0,0,0,.2)}
+                .mobile-simple-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:2px;background:#fbfbfb}
+                .simple-grid-item{position:relative;aspect-ratio:150/275;overflow:hidden}
+                .simple-product-link{display:block;width:100%;height:100%}
+                .simple-product-image{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+                .simple-product-link:hover .simple-product-image{transform:scale(1.02)}
+                .wrap{padding:2%;height:100%;background:#fbfbfb}
+                .text-center{text-align:center}
+                .margintop20{margin-top:20px}
+                .clearfix:after{content:"";display:table;clear:both}
+                a{color:#353233;text-decoration:none;transition:color .3s ease}
+                a:hover{color:#1B83A0}
+                @media (max-width:399px){.mobile-simple-grid{grid-template-columns:repeat(4,1fr)}}
+                ';
+            }
+            ?>
         </style>
         
     <?php else: ?>

@@ -60,7 +60,7 @@ summary{display:list-item}
 .wrap{padding:2%;height:100%; background:#fbfbfb;}
 .wrap img{max-width:100%}
 
-/* Body */
+/* Body - AMP ve Normal sayfa uyumlu */
 body {
     margin: 0;
     background: #e5e5e5;
@@ -71,9 +71,17 @@ body {
     font-size: 15px;
 }
 
-body.body{background:#e5e5e5;font-family:Quicksand,sans-serif;font-weight:400;color:#363636;line-height:1.44;font-size:15px}
+/* AMP body class support */
+body.amp-page {
+    background: #e5e5e5;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+    color: #363636;
+    line-height: 1.44;
+    font-size: 15px;
+}
 
-/* Ana Container */
+/* Ana Container - AMP uyumlu */
 .main-wrapper {
     background: #fff;
     max-width: 780px;
@@ -81,36 +89,38 @@ body.body{background:#e5e5e5;font-family:Quicksand,sans-serif;font-weight:400;co
     min-height: 100vh;
 }
 
-.istanbul-amp-wrapper{background:#fff;max-width:780px;margin:0 auto}
-
 /* Typography */
 blockquote,p{margin:0 0 15px}
 .bold,b,strong{font-weight:700}
 a{-webkit-transition:all .4s ease;-moz-transition:all .4s ease;-o-transition:all .4s ease;transition:all .4s ease}
-amp-video{height:auto}
+
+/* AMP video support */
+amp-video{height:auto;max-width:100%}
+
 .strong-label,blockquote{color:#000;font-family:Quicksand,sans-serif;font-weight:500;line-height:1.5}
 blockquote{border:1px solid #e2e2e2;border-width:1px 0;padding:15px 15px 15px 60px;text-align:left;position:relative;clear:both}
 blockquote p:last-child{margin-bottom:0}
 
-.amp-image-tag,amp-video{max-width:100%}
+/* AMP image support */
+.amp-image-tag,amp-img,amp-video{max-width:100%}
 
 /* Headings */
 .h1,.h2,.h3,.h4,.h5,.h6,.heading-typo,h1,h2,h3,h4,h5,h6{font-family:Quicksand,sans-serif;font-weight:500;margin:15px 0 7px}
 .heading{font-size:16px;font-weight:700;margin:10px 0}
 
 /* Utility Classes */
-.text-center{text-align:center;}
-hr{border:0.5px solid #ddd;}
-.margintop20{margin-top:20px;}
+.text-center{text-align:center}
+hr{border:0.5px solid #ddd}
+.margintop20{margin-top:20px}
 
-/* Site Header */
+/* Site Header - AMP uyumlu */
 .site-header {
     height: 52px;
     width: 100%;
     position: relative;
     margin: 0;
     color: #fff;
-    background: linear-gradient(to right, #2F0743, #41295a);
+    background: linear-gradient(to right, #004a7f, #004a7f);
 }
 
 .site-header .branding {
@@ -130,9 +140,9 @@ hr{border:0.5px solid #ddd;}
     line-height: 32px;
 }
 
-.site-header .branding .amp-image-tag{display:inline-block}
-.sticky-nav .site-header{position:fixed;left:0;right:0;top:0;z-index:999;display:block}
-body.sticky-nav{padding-top:52px}
+/* AMP image support in header */
+.site-header .branding .amp-image-tag,
+.site-header .branding amp-img{display:inline-block}
 
 .navbar-toggle, .navbar-search {
     color: #fff;
@@ -170,17 +180,17 @@ body.sticky-nav{padding-top:52px}
 }
 
 /* Site Title */
-.sitebaslik{padding:4px;background-image: radial-gradient( circle farthest-corner at 50.4% 50.5%, rgba(135,2,35,1) 0%, rgba(251,32,86,1) 90% );color:#fff;font-size:16px;}
-.sitebaslik h1{margin:10px 0;}
+.sitebaslik{padding:4px;background-image: radial-gradient( circle farthest-corner at 50.4% 50.5%, rgba(135,2,35,1) 0%, rgba(251,32,86,1) 90% );color:#fff;font-size:16px}
+.sitebaslik h1{margin:10px 0}
 
 /* Lists */
-ul {list-style: none;margin:0;padding:0;}
+ul {list-style: none;margin:0;padding:0}
 
 /* ============================================
-   RESPONSIVE ÜRÜN SHOWCASE SİSTEMİ
+   RESPONSIVE ÜRÜN SHOWCASE SİSTEMİ - AMP UYUMLU
    ============================================ */
 
-/* Ana Grid Container */
+/* Ana Grid Container - AMP Simple Grid */
 .product-showcase {
     text-align: center;
     width: 100%;
@@ -189,15 +199,50 @@ ul {list-style: none;margin:0;padding:0;}
     background: #fbfbfb;
 }
 
-/* Grid Öğesi - Mobile First: 5 sütun */
+/* Mobile Simple Grid - AMP uyumlu */
+.mobile-simple-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    padding: 2px;
+    background: #fbfbfb;
+}
+
+/* Simple Grid Item - AMP uyumlu */
+.simple-grid-item {
+    position: relative;
+    aspect-ratio: 150/275;
+    overflow: hidden;
+}
+
+/* Simple Product Link - AMP uyumlu */
+.simple-product-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+/* Simple Product Image - AMP img uyumlu */
+.simple-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+/* Hover effects for AMP */
+.simple-product-link:hover .simple-product-image {
+    transform: scale(1.02);
+}
+
+/* Grid Öğesi - Backward compatibility */
 .showcase-grid {
     float: left;
     margin: 2px auto;
     padding: 1px;
     box-sizing: border-box;
-    
-    /* Default: Mobilde 5 sütun (20%) */
-    width: 20%;
+    width: 20%; /* Default: 5 sütun */
 }
 
 /* Grid İçindeki Liste */
@@ -209,7 +254,7 @@ ul {list-style: none;margin:0;padding:0;}
     list-style: none;
 }
 
-/* Ürün Kartı */
+/* Ürün Kartı - AMP uyumlu */
 .showcase-grid ul li.product-card {
     width: 100%;
     position: relative;
@@ -239,7 +284,7 @@ ul {list-style: none;margin:0;padding:0;}
     bottom: 0;
 }
 
-/* Ürün Görseli */
+/* Ürün Görseli - AMP img desteği */
 .showcase-grid ul li.product-card amp-img,
 .showcase-grid ul li.product-card img {
     width: 100%;
@@ -251,7 +296,7 @@ ul {list-style: none;margin:0;padding:0;}
     left: 0;
 }
 
-/* Hover efektleri */
+/* Hover efektleri - AMP uyumlu */
 .showcase-grid ul li.product-card:hover {
     transform: scale(1.02);
     transition: transform 0.3s ease;
@@ -259,6 +304,7 @@ ul {list-style: none;margin:0;padding:0;}
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
+/* AMP carousel hover effects */
 .showcase-grid ul li.product-card a:hover amp-img,
 .showcase-grid ul li.product-card a:hover img {
     transform: scale(1.05);
@@ -279,7 +325,7 @@ ul {list-style: none;margin:0;padding:0;}
     clear: both;
 }
 
-/* Loading placeholder */
+/* Loading placeholder - AMP uyumlu */
 .showcase-grid ul li.product-card .loading-placeholder,
 .showcase-grid ul li.product-card .no-image {
     background: #f0f0f0;
@@ -296,20 +342,14 @@ ul {list-style: none;margin:0;padding:0;}
     text-align: center;
 }
 
-/* Responsive Breakpoints - Mobile First */
-
-/* 6 sütun - Büyük Desktop (1400px+) */
-@media (min-width: 1400px) {
-    .showcase-grid {
-        width: 16.6666666667%; /* 6 sütun */
-    }
-}
-
-/* 5 sütun - Desktop (400px+) - DEFAULT */
-/* Zaten default olarak 20% = 5 sütun */
+/* Responsive Breakpoints - Mobile First AMP */
 
 /* 4 sütun - Küçük mobil (320px - 399px) */
 @media (max-width: 399px) {
+    .mobile-simple-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
     .showcase-grid {
         width: 25%; /* 4 sütun */
     }
@@ -317,13 +357,18 @@ ul {list-style: none;margin:0;padding:0;}
 
 /* 3 sütun - Çok küçük mobil (280px ve altı) */
 @media (max-width: 280px) {
+    .mobile-simple-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
     .showcase-grid {
         width: 33.3333333333%; /* 3 sütun */
     }
 }
 
 /* No products message */
-.no-products-found {
+.no-products-found,
+.no-products {
     text-align: center;
     padding: 40px 20px;
     color: #666;
@@ -335,7 +380,7 @@ ul {list-style: none;margin:0;padding:0;}
 }
 
 /* ============================================
-   DESKTOP BLOG STİLLERİ
+   DESKTOP BLOG STİLLERİ - AMP UYUMLU
    ============================================ */
 
 .desktop-content {
@@ -440,6 +485,7 @@ ul {list-style: none;margin:0;padding:0;}
     text-align: center;
 }
 
+/* AMP image support in articles */
 .article-image {
     max-width: 100%;
     height: auto;
@@ -474,7 +520,7 @@ ul {list-style: none;margin:0;padding:0;}
     color: #fff;
 }
 
-/* Pagination */
+/* Pagination - AMP uyumlu */
 .pagination-wrapper {
     margin: 40px 0;
     text-align: center;
@@ -568,10 +614,10 @@ ul {list-style: none;margin:0;padding:0;}
 }
 
 /* ============================================
-   TEKİL ÜRÜN SAYFASI STİLLERİ (MEVCUT)
+   TEKİL ÜRÜN SAYFASI STİLLERİ - AMP CAROUSEL UYUMLU
    ============================================ */
 
-/* HTML Taslağı Buttons */
+/* HTML Taslağı Buttons - AMP uyumlu */
 .buttons {
   display: inline-block;
   height: 30px;
@@ -628,22 +674,34 @@ ul {list-style: none;margin:0;padding:0;}
   background: #25D366;
 }
 
-.nav-links h2{font-size:16px;margin:10px 0;}
+.nav-links h2{font-size:16px;margin:10px 0}
 
 /* HTML Taslağı Kişisel Bilgi Tablosu */
-section#kisiselBilgi ul li{float:left;margin-bottom:1%;}
+section#kisiselBilgi ul li{float:left;margin-bottom:1%}
 section#kisiselBilgi ul li.baslik{float:left;border:0px solid #ddd;background-color:#666666;color:#ffffff;height:30px;line-height:28px;padding-left:1%;
-width:calc(25% - 2px);font-size:90%;margin-left:2px;font-weight:500;}
+width:calc(25% - 2px);font-size:90%;margin-left:2px;font-weight:500}
 section#kisiselBilgi ul li.veri{float:left;height:30px;line-height:28px;text-indent:4%;
-width:calc(45% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize;}
+width:calc(45% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
 section#kisiselBilgi ul li.baslik2{float:left;border:0px solid #ddd;background-color:#666666;color:#ffffff;height:30px;line-height:28px;padding-left:1%;
-width:calc(15% - 2px);font-size:90%;margin-left:2px;font-weight:500;}
+width:calc(15% - 2px);font-size:90%;margin-left:2px;font-weight:500}
 section#kisiselBilgi ul li.veri2{float:left;height:30px;line-height:28px;text-indent:4%;
-width:calc(15% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize;}
-section#kisiselBilgi .ayir{display:none;}
-section#kisiselBilgi .temizle{display:none;}
+width:calc(15% - 2px);font-size:90%;font-weight:500;background-color:#fbfbfb;border:1px solid #ddd;border-left:none;color:#777777;text-transform:capitalize}
+section#kisiselBilgi .ayir{display:none}
+section#kisiselBilgi .temizle{display:none}
 
-/* Gallery Styles (Tekil ürün sayfası için) */
+/* AMP Carousel Styles - Tekil ürün sayfası için */
+amp-carousel {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+amp-carousel amp-img {
+    object-fit: cover;
+}
+
+/* Non-AMP Gallery Styles (Desktop fallback) */
 .product-image-slider {
     margin-bottom: 20px;
 }
@@ -702,37 +760,216 @@ section#kisiselBilgi .temizle{display:none;}
     box-shadow: 0 4px 8px rgba(27, 131, 160, 0.3);
 }
 
+/* No gallery placeholder - AMP uyumlu */
+.no-gallery-placeholder {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Product description styles */
+.product-description,
+.default-description {
+    margin: 20px 0;
+    line-height: 1.7;
+    color: #333;
+}
+
+.product-description p,
+.default-description p {
+    margin-bottom: 15px;
+}
+
+/* Warning section */
+.warning-section {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.warning-section h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.warning-section h5 {
+    color: #6c757d;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
 /* ============================================
-   SIDEBAR ve FOOTER
+   AMP SIDEBAR STİLLERİ
    ============================================ */
 
-/* Sidebar */
-.istanbul-amp-sidebar{background:#fff;max-width:350px;min-width:270px;padding-bottom:30px}
-.istanbul-amp-sidebar .sidebar-container{width:100%;background:#f6f6f6;}
-.istanbul-amp-sidebar .close-sidebar{font-size:16px;border:none;color:#fff;position:absolute;top:10px;right:10px;background:#444;width:20px;height:32px;line-height:32px;text-align:center;padding:0;outline:0;transition:all .6s ease;cursor:pointer}
-.istanbul-amp-sidebar .close-sidebar:hover{background:#222;}
-.sidebar-brand{color:#fff;padding:35px 24px 24px;text-align:left;font-family:Quicksand,sans-serif;line-height:2}
-.sidebar-brand .logo .amp-image-tag{display:inline-block;margin:0}
-.sidebar-brand.type-text{padding-top:10px}
-.sidebar-brand .brand-name{font-weight:500;font-size:15px}
-.sidebar-brand .brand-description{font-weight:400;font-size:12px;line-height:1.4;margin-top:4px}
+/* AMP Sidebar - Responsive */
+.amp-sidebar {
+    background: #fff;
+    max-width: 350px;
+    min-width: 270px;
+    padding-bottom: 30px;
+}
+
+.close-sidebar {
+    font-size: 25px;
+    border: none;
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    background: 0 0;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    padding: 0;
+    outline: 0;
+    cursor: pointer;
+}
+
+.sidebar-brand {
+    color: #fff;
+    padding: 0px 50px 10px 5px;
+    text-align: left;
+    font-family: Quicksand, sans-serif;
+    line-height: 2;
+    background: linear-gradient(to right, #004a7f, #004a7f);
+}
+
+.sidebar-brand .brand-name {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.sidebar-brand .brand-description {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    padding: 20px;
+}
+
+.mobile-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-menu li {
+    border-bottom: 1px solid #eee;
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 12px 0;
+    color: #333;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.mobile-menu a:hover {
+    color: #1B83A0;
+}
+
+/* ============================================
+   FOOTER STİLLERİ - AMP UYUMLU
+   ============================================ */
 
 /* Footer */
-.istanbul-amp-footer{margin:0;background:#f3f3f3}
-.istanbul-amp-footer.sticky-footer{position:fixed;bottom:0;left:0;right:0}
-.istanbul-amp-footer-nav{border-top:1px solid rgba(0,0,0,.1);background:#fff;padding:14px 15px}
-.istanbul-amp-copyright{padding:17px 10px;text-align:center;font-family:Quicksand,sans-serif;font-weight:400;color:#494949;border-top:1px solid rgba(0,0,0,.1);font-size:13px}
+.istanbul-amp-footer,
+.site-footer {
+    margin: 0;
+    background: #f3f3f3;
+}
 
-.footer-navigation{list-style:none;margin:0;padding:0;text-align:center}
-.footer-navigation li{display:inline-block;margin:0 8px 5px}
-.footer-navigation li li,.footer-navigation ul{display:none}
-.footer-navigation a{text-decoration:none;color:#494949;font-family:Quicksand,sans-serif;font-weight:300;font-size:14px}
-.footer-navigation .fa{margin-right:5px}
+.istanbul-amp-footer-nav,
+.footer-content {
+    border-top: 1px solid rgba(0,0,0,.1);
+    background: #fff;
+    padding: 14px 15px;
+}
 
-.istanbul-amp-main-link{display:block;text-align:center;font-weight:700;margin:6px 0 12px}
-.istanbul-amp-main-link a{color:#fff;text-decoration:none;padding:0 15px;display:inline-block;border:1px solid rgba(0,0,0,.08);border-radius:33px;line-height:26px;font-size:12px;font-weight:400;background: linear-gradient(to right, #2F0743, #41295a);}
-.istanbul-amp-main-link a .fa{margin-right:5px}
-.istanbul-amp-main-link a:hover{background: linear-gradient(to right, #41295a, #2F0743);}
+.istanbul-amp-copyright {
+    padding: 17px 10px;
+    text-align: center;
+    font-family: Quicksand, sans-serif;
+    font-weight: 400;
+    color: #494949;
+    border-top: 1px solid rgba(0,0,0,.1);
+    font-size: 13px;
+}
+
+.footer-navigation {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.footer-navigation li {
+    margin: 0;
+}
+
+.footer-navigation li li,
+.footer-navigation ul {
+    display: none;
+}
+
+.footer-navigation a {
+    text-decoration: none;
+    color: #494949;
+    font-family: Quicksand, sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: color 0.3s ease;
+}
+
+.footer-navigation a:hover {
+    color: #1B83A0;
+}
+
+.footer-navigation .fa {
+    margin-right: 5px;
+}
+
+.istanbul-amp-main-link {
+    display: block;
+    text-align: center;
+    font-weight: 700;
+    margin: 6px 0 12px;
+}
+
+.istanbul-amp-main-link a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0 15px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 33px;
+    line-height: 26px;
+    font-size: 12px;
+    font-weight: 400;
+    background: linear-gradient(to right, #004a7f, #004a7f);
+}
+
+.istanbul-amp-main-link a .fa {
+    margin-right: 5px;
+}
+
+.istanbul-amp-main-link a:hover {
+    background: linear-gradient(to right, #155a70, #004a7f);
+}
 
 /* Footer content wrapper */
 .footer-content {
@@ -745,28 +982,330 @@ section#kisiselBilgi .temizle{display:none;}
     margin-bottom: 10px;
 }
 
-.footer-navigation {
+/* ============================================
+   SINGLE ARTICLE STİLLERİ - AMP UYUMLU
+   ============================================ */
+
+.single-article-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+}
+
+.single-article {
+    margin-bottom: 40px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.breadcrumb a {
+    color: #1B83A0;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+/* Article Header */
+.article-header {
+    margin-bottom: 30px;
+}
+
+.article-title {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.categories {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.category-link {
+    background: #1B83A0;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.category-link:hover {
+    background: #155a70;
+    color: #fff;
+}
+
+/* Featured Image */
+.featured-image-container {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.featured-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Article Content */
+.article-content {
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.article-content p {
+    margin-bottom: 20px;
+}
+
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.article-content h2 {
+    font-size: 24px;
+}
+
+.article-content h3 {
+    font-size: 20px;
+}
+
+.article-content h4 {
+    font-size: 18px;
+}
+
+.article-content ul,
+.article-content ol {
+    margin-bottom: 20px;
+    padding-left: 30px;
+}
+
+.article-content li {
+    margin-bottom: 8px;
+}
+
+.article-content blockquote {
+    background: #f8f9fa;
+    border-left: 4px solid #1B83A0;
+    padding: 20px;
+    margin: 30px 0;
+    font-style: italic;
+}
+
+/* Article Tags */
+.article-tags {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.tag-link {
+    display: inline-block;
+    background: #e9ecef;
+    color: #495057;
+    padding: 5px 10px;
+    margin: 5px 5px 5px 0;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.tag-link:hover {
+    background: #1B83A0;
+    color: #fff;
+}
+
+/* Social Share */
+.social-share {
+    margin: 40px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.social-share h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.share-buttons {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
-.footer-navigation li {
-    margin: 0;
+.share-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.footer-navigation a {
-    padding: 5px 10px;
-    transition: color 0.3s ease;
+.share-btn.facebook {
+    background: #3b5998;
+    color: #fff;
 }
 
-.footer-navigation a:hover {
+.share-btn.twitter {
+    background: #1da1f2;
+    color: #fff;
+}
+
+.share-btn.whatsapp {
+    background: #25d366;
+    color: #fff;
+}
+
+.share-btn.email {
+    background: #6c757d;
+    color: #fff;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Related Articles */
+.related-articles {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #1B83A0;
+}
+
+.related-articles h3 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.related-article {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.related-article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.related-image {
+    height: 150px;
+    overflow: hidden;
+}
+
+.related-image img,
+.related-image amp-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-content {
+    padding: 15px;
+}
+
+.related-content h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.related-content h4 a {
+    color: #333;
+    text-decoration: none;
+}
+
+.related-content h4 a:hover {
     color: #1B83A0;
 }
 
+.related-content p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Post Navigation */
+.post-navigation {
+    margin: 40px 0;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.nav-previous {
+    text-align: left;
+}
+
+.nav-next {
+    text-align: right;
+}
+
+.nav-link {
+    display: block;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background: #1B83A0;
+    color: #fff;
+}
+
 /* ============================================
-   RESPONSIVE AYARLAR
+   RESPONSIVE AYARLAR - AMP UYUMLU
    ============================================ */
 
 /* Tablet ve altı */
@@ -785,6 +1324,7 @@ section#kisiselBilgi .temizle{display:none;}
         display: none;
     }
     
+    /* Kişisel bilgi tablosu responsive */
     section#kisiselBilgi ul li.baslik,
     section#kisiselBilgi ul li.veri {
         width: calc(50% - 2px);
@@ -811,6 +1351,33 @@ section#kisiselBilgi .temizle{display:none;}
     
     .article-title {
         font-size: 24px;
+    }
+    
+    /* Single article responsive */
+    .single-article-container {
+        padding: 15px;
+    }
+    
+    .article-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .share-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .related-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-links {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-next {
+        text-align: left;
     }
 }
 
@@ -839,20 +1406,30 @@ section#kisiselBilgi .temizle{display:none;}
     .blog-header h1 {
         font-size: 24px;
     }
+    
+    /* Footer responsive */
+    .footer-navigation {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .site-header .branding {
+        font-size: 18px;
+        padding: 10px 50px;
+    }
+    
+    .navbar-toggle,
+    .navbar-search {
+        width: 50px;
+        font-size: 16px;
+    }
 }
 
 /* ============================================
-   TEMA RENKLERİ ve GENEL STİLLER
+   TEMA RENKLERİ ve GENEL STİLLER - AMP UYUMLU
    ============================================ */
 
 /* Theme Colors */
-a{color: #353233;}
-body.body {background:#e5e5e5;}
-.istanbul-amp-wrapper {background:#ffffff;color: #363636;}
-.istanbul-amp-footer {background:#f3f3f3;}
-.istanbul-amp-footer-nav {background:#ffffff;}
-
-/* Links */
 a {
     color: #353233;
     text-decoration: none;
@@ -863,8 +1440,23 @@ a:hover {
     color: #1B83A0;
 }
 
-/* Accessibility */
-button:focus, a:focus, input:focus {
+/* AMP specific body classes */
+body.amp-page {
+    background: #e5e5e5;
+}
+
+body.mobile-device {
+    background: #e5e5e5;
+}
+
+body.desktop-device {
+    background: #f5f5f5;
+}
+
+/* Accessibility - AMP uyumlu */
+button:focus, 
+a:focus, 
+input:focus {
     outline: 2px solid #1B83A0;
     outline-offset: 2px;
 }
@@ -874,25 +1466,53 @@ button:focus, a:focus, input:focus {
     outline-offset: 2px;
 }
 
-/* Reduced motion support */
+/* AMP carousel focus */
+amp-carousel:focus {
+    outline: 2px solid #1B83A0;
+    outline-offset: 2px;
+}
+
+/* Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Reduced motion support - AMP uyumlu */
 @media (prefers-reduced-motion: reduce) {
     .showcase-grid ul li.product-card:hover,
     .showcase-grid ul li.product-card a:hover amp-img,
     .showcase-grid ul li.product-card a:hover img,
     .gallery-thumb:hover,
-    .gallery-thumb.active {
+    .gallery-thumb.active,
+    .simple-product-link:hover .simple-product-image {
         transform: none;
         transition: none;
     }
+    
+    amp-carousel {
+        animation: none;
+    }
 }
 
-/* Print styles */
+/* Print styles - AMP uyumlu */
 @media print {
     .site-header,
     .istanbul-amp-footer,
+    .site-footer,
     .navbar-toggle,
     .navbar-search,
-    .main-sidebar {
+    .main-sidebar,
+    .amp-sidebar,
+    .social-share,
+    .nav-links {
         display: none;
     }
     
@@ -904,6 +1524,30 @@ button:focus, a:focus, input:focus {
         box-shadow: none;
         max-width: none;
     }
+    
+    amp-carousel {
+        display: none;
+    }
+    
+    .gallery-thumbs {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .showcase-grid ul li.product-card {
+        border: 3px solid #000;
+    }
+    
+    .buttons {
+        border: 2px solid #000;
+    }
+    
+    .category-tag,
+    .tag-link {
+        border: 1px solid #000;
+    }
 }
 
 /* Smooth scroll */
@@ -911,7 +1555,111 @@ html {
     scroll-behavior: smooth;
 }
 
-/* AMP specific */
+/* AMP specific styles */
 amp-img {
     background-color: #f5f5f5;
+}
+
+/* AMP carousel specific */
+amp-carousel[type="slides"] {
+    background: #f5f5f5;
+}
+
+amp-carousel button {
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+amp-carousel button:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* AMP sidebar specific */
+amp-sidebar {
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* Loading states for AMP */
+amp-img[i-amphtml-ssr] {
+    background: #f0f0f0;
+}
+
+/* AMP analytics (hidden by default) */
+amp-analytics {
+    display: none;
+}
+
+/* Ensure AMP validation compliance */
+.amp-page img {
+    max-width: 100%;
+    height: auto;
+}
+
+.amp-page iframe {
+    max-width: 100%;
+}
+
+/* AMP layout helpers */
+.amp-layout-responsive {
+    position: relative;
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+.amp-layout-responsive > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    body.amp-page {
+        background: #1a1a1a;
+        color: #e0e0e0;
+    }
+    
+    .main-wrapper {
+        background: #2d2d2d;
+    }
+    
+    .showcase-grid ul li.product-card {
+        background: #3d3d3d;
+        border-color: #555;
+    }
+    
+    section#kisiselBilgi ul li.veri,
+    section#kisiselBilgi ul li.veri2 {
+        background: #3d3d3d;
+        color: #e0e0e0;
+        border-color: #555;
+    }
+}
+
+/* Final AMP optimizations */
+@media (max-width: 320px) {
+    .mobile-simple-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+    }
+    
+    .showcase-grid {
+        width: 33.33%;
+        margin: 1px;
+        padding: 0.5px;
+    }
+    
+    .site-header .branding {
+        font-size: 16px;
+        padding: 10px 45px;
+    }
 }
